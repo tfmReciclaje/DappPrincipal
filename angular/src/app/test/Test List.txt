@@ -1,0 +1,16 @@
+
+WEB3 - bootstrapWeb3 function launched.
+ACCOUNTS - refreshAccounts(). Get accounts from currentProvider and get the Default Account.
+
+NOT ADMIN - Not allowed adding a new Associated using an account not Admin.
+PAUSE - Not allowed adding a new Associated in pause.
+EXISTING ASSOCIATED NAME - Not allowed Adding a new Associated with a existing Associated Name.
+ENABLE/DISABLE - Disable an associated using an account Not Admin.
+
+NOT ADMIN - Not allowed adding a new Container using an account not Admin.
+PAUSE - Not allowed adding a new Container witdh Associated in Pause.
+EXISTING REF - Not allowed Adding a new Container with an existing ref.
+EXISTING ADDRESS - Not allowed Adding a new Container with an existing address.
+WRONG SECRET WORD - Not allowed exchange points with a wrong secret word.
+EXCHANGE NOT ADMIN - Not allowed exchange points using an account not Admin.
+CLEAR NOT MANAGER - Not allowed exchange points using an Associated Account not Manager.

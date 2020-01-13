@@ -1,0 +1,42 @@
+<div>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: rgb(118, 129, 118)">  
+    <div class="input-group navbar-nav mr-auto ml-4" >
+      
+      <form class="form-inline" >
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Account</span>
+          </div>
+          <select class="form-control" autofocus [(ngModel)]="web3Service.default_account.account" [ngModelOptions]="{standalone: true}" (change)="changeAccount();" >
+            <option *ngFor="let account of web3Service.accounts" >{{account}}</option> 
+          </select> 
+        </div> 
+        <div class="input-group ml-2" >
+          <div class="input-group-prepend">
+            <span class="input-group-text">Balance</span>
+          </div>
+          <input type="text" class="form-control col-xs-1" placeholder="Amount" disabled [ngModel]="balance()" [ngModelOptions]="{standalone: true}">          
+        </div>                      
+      </form>
+      
+      <div class="input-group-prepend ml-4 mr-4">
+        <button class="btn btn-mg btn-secondary mr-2" style="border-radius: 6px;color:white" [ngStyle]="{'background-color':(mainService._paused)?'rgb(228, 45, 45)':'rgb(62, 158, 38)'}" (click)="pause()">{{textPause()}}</button>        
+      </div>
+      
+      <div class="input-group-prepend">
+        <span class="input-group-text">Proveedor</span>
+      </div>
+      <select class="form-control" style="max-width: 10rem;" [(ngModel)]="web3Service.provider" (change)="updateProvider()">           
+        <option >Metamask</option> 
+        <option >URL</option> 
+      </select>
+      <input *ngIf="web3Service.provider=='URL'" type="text" class="form-control" [(ngModel)]="web3Service.provider_url" > 
+    </div>     
+  </nav>
+  <div class="container-fluid" style="padding:0;max-width: 1600px;">     
+    <router-outlet></router-outlet>      
+  </div>
+</div>
+
+
+

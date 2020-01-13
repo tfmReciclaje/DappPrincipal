@@ -1,0 +1,30 @@
+<div class="card border-tfm w-100">
+  <span  class="card-header-tfm bg-associated-header" >Clear Points
+      <button type="button" class="close card-close-tfm"  [attr.aria-label]="'Close'" (click)="closeModal()"><span aria-hidden="true">&times;</span></button>                  
+  </span>  
+
+  <div class="form mb-4 mt-4 ml-4 mr-4"> 
+    <div class="input-group mb-1">
+      <div class="input-group-prepend">
+        <span class="input-group-text">Exchanged Points</span>
+      </div>
+      <input type="number" class="form-control" placeholder="" readonly [(ngModel)]="exchangedPoints">
+    </div>      
+    <div class="input-group ">
+      <div class="input-group-prepend">
+        <span class="input-group-text">Amount Point to Clear</span>
+      </div>
+      <input type="number" class="form-control" placeholder="" required [(ngModel)]="amount">
+    </div>                                       
+  </div>            
+
+  <div class="row justify-content-center mb-4 mt-2 ml-4 mr-4;padding: 10px;" style="width:340px">
+    <button *ngIf="!done" class="card-body ml-2 mr-2" style="padding: 10px;height: 220px; width: 180px; background-color: white;border-radius: 12px;" (click)="clear()">
+      <img class="card-img-top" src= "assets/clear.jpg" style="width: 100%;height: 180px;">           
+    </button>              
+    <button *ngIf="done" class="card-body ml-2 mr-2" style="padding: 10px;height: 220px; width: 180px; background-color: white;border-radius: 12px;" (click)="close()">
+      <img class="card-img-top" src= "assets/valido.png" style="width: 100%;height: 180px;">           
+    </button>
+  </div>                              
+    
+</div> 

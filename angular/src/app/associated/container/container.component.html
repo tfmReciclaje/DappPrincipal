@@ -1,0 +1,76 @@
+<div class="card border-tfm w-100">
+  <span  class="card-header-tfm bg-associated-header" >Container.
+      <button type="button" class="close card-close-tfm"  [attr.aria-label]="'Close'" (click)="closeModal()"><span aria-hidden="true">&times;</span></button>            
+      <div class="input-group mt-2 ml-2 mb-2 mr-4">
+        <div class="input-group-prepend ">
+          <span class="input-group-text" >Reference: </span>
+        </div>
+        <input type="text" class="form-control mr-2" readonly [ngModel]="this.web3Service.web3.utils.toAscii(this.nameRef)">
+      </div>
+  </span>  
+  <div class="card-body card-body-tfm">    
+    
+    <div class="form-inline mb-4 mt-2 ml-2">      
+      <div class="input-group ">
+        <div class="input-group-prepend">
+          <span class="input-group-text">User Name</span>
+        </div>
+        <input type="text" class="form-control" placeholder="" required [(ngModel)]="userName">
+      </div>
+      <div class="btn-group" style = "float:right">
+        <button *ngIf="!checked" type="submit"  class="btn btn-mg btn-outline-secondary btn-tfm mr-2 ml-1" (click)="checkUserName()">Check</button>
+        <span *ngIf="checked">
+          <img class=" ml-1" src= "assets/check.jpg" style="width: 50px;height: 30px;">        
+        </span>
+      </div>
+      <div *ngIf="password" class="input-group ml-2">
+        <div class="input-group-prepend">
+          <span class="input-group-text">Secret Word</span>
+        </div>
+        <input  type="password" class="form-control" placeholder="" [(ngModel)]="secretWord" >
+      </div>                      
+    </div>    
+
+    <div *ngIf="checked" class="form-inline mb-4" >            
+      <div >
+        <button class="card-body ml-2 mr-2" style="padding: 10px;height: 280px; background-color: white;border-radius: 12px;" (click)="raisePack1()">
+          <img class="card-img-top" src= "assets/lata.jpg" style="width: 190px;height: 180px;">           
+        </button>
+        <div class="input-group mt-2 ml-2 mr-2">                 
+          <input type="number" class="form-control" style="text-align:right;width: 190px;font-weight: bold;" [(ngModel)]="pack1" >                        
+        </div>         
+      </div>
+      <div >
+        <button class="card-body ml-2 mr-2" style="padding: 10px;height: 280px; background-color: white;border-radius: 12px;" (click)="raisePack2()">
+          <img class="card-img-top" src= "assets/vidrio.jpeg" style="width: 190px;height: 180px;">           
+        </button>
+        <div class="input-group mt-2 ml-2 mr-2">                    
+          <input type="number" class="form-control" style="text-align:right;width: 190px;font-weight: bold;" [(ngModel)]="pack2" >                        
+        </div>         
+      </div>
+      <div >
+        <button class="card-body ml-2 mr-6" style="padding: 10px;height: 280px; background-color: white;border-radius: 12px;" (click)="raisePack3()">
+          <img class="card-img-top" src= "assets/envase.jpg" style="width: 190px;height: 180px;">           
+        </button>
+        <div class="input-group mt-2 ml-2 mr-2">                      
+          <input type="number" class="form-control" style="text-align:right;width: 190px;font-weight: bold;" [(ngModel)]="pack3" >
+        </div>         
+      </div>
+      <div >
+        <button *ngIf="!done" class="card-body mt-2 ml-4 mr-2" style="padding: 10px;height: 240px; width: 240px; background-color: white;border-radius: 12px;" (click)="send()">
+          <img class="card-img-top" src= "assets/recycling.jpg" style="width: 190px;height: 200px;">           
+        </button> 
+        <button *ngIf="done" class="card-body mt-2 ml-4 mr-2" style="padding: 10px;height: 240px; width: 240px; background-color: white;border-radius: 12px;" (click)="close()">
+          <img class="card-img-top" src= "assets/valido.png" style="width: 190px;height: 200px;">           
+        </button>        
+        <div class="card border-tfm mr-1 mt-2 ml-4" style="width: 240px">
+          <span class="card-header-tfm bg-tfm">User Points</span>    
+          <div class="card-body" style="padding: 6px">  
+              <input type="text" class="form-control" style="text-align:right;" readonly [ngModel]="userBalance">
+          </div>    
+        </div>
+               
+      </div>
+                         
+    </div>         
+</div> 

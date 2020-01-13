@@ -1,0 +1,7 @@
+[
+    {"name":"carrefour", "description":"Carrefour"},
+    {"name":"corteingles", "description":"El Corte Ingles"},
+    {"name":"mercadona", "description":"Mercadona"},
+    {"name":"alcampo", "description":"Alcampo"},
+    {"name":"vaguada", "description":"La Vaguada"}    
+]

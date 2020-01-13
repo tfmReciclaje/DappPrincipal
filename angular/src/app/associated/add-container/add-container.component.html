@@ -1,0 +1,25 @@
+<div class="card border-tfm w-100">
+  <span  class="card-header-tfm bg-associated-header" >New Container
+      <button type="button" class="close card-close-tfm"  [attr.aria-label]="'Close'" (click)="closeModal()"><span aria-hidden="true">&times;</span></button>            
+  </span>  
+  <div class="card-body card-body-tfm">    
+    <form class="form" [formGroup]="addContainer" >      
+      <div class="input-group mb-2">
+        <div class="input-group-prepend">
+          <span class="input-group-text">Código de Referencia</span>
+        </div>
+        <input type="text" class="form-control" placeholder="ref" formControlName="ref" required [(ngModel)]="container.ref" >
+      </div>      
+      <div class="input-group mb-2">
+        <div class="input-group-prepend">
+          <span class="input-group-text">Address</span>
+        </div>
+        <input type="text" class="form-control" placeholder="Address" formControlName="container_address" required autofocus [(ngModel)]="container.address" >
+      </div>
+      <div class="btn-group" style = "float:right">
+        <button  *ngIf="mode=='add'" type="submit" [disabled]="!addContainer.valid" class="btn btn-mg btn-outline-secondary btn-tfm mr-1 pull-right" (click)="add()">Add</button>        
+        <button aria-label="Cancel" type="submit" class="btn btn-mg btn-outline-secondary btn-tfm pull-right" (click)="closeModal()">Cancel</button>      
+      </div>
+    </form>
+  </div>
+</div> 

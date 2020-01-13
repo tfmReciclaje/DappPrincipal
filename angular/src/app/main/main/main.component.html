@@ -1,0 +1,128 @@
+
+<div class="row mr-1 ml-1" >
+  
+  <div class="col-md-2" style="padding-left: 2px;padding-right: 2px;">
+    <div class="card  w-100 ml-1 mt-4 mr-1"  style="height: 320px;">
+      
+      
+      <div class="card-body">  
+        <img class="card-img-top mt-2" src= "assets/principal.jpg" style="width: 100%;height: 260px;">         
+      </div>    
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card border-tfm w-100 mt-4" style="height: 320px">
+      <span class="card-header-tfm bg-main-header">Total Values
+      </span>    
+      <div class="card-body">  
+        <form class="form">
+          <div class="input-group mt-2 ml-2">
+            <div class="input-group-prepend">
+              <span class="input-group-text" style="width: 200px">Total Items </span>
+            </div>
+            <input type="number" class="form-control" style="text-align:right" [ngModelOptions]="{standalone: true}" placeholder="" readonly [ngModel]="mainService.totalItems" >          
+            <p class="ml-2 mr-2 mt-2" style="margin:0; font-weight: bold; vertical-align: middle">Points</p>
+          </div>
+          <div class="input-group mt-2 ml-2">
+            <div class="input-group-prepend">
+              <span class="input-group-text" style="width: 200px">Total Points Balance </span>
+            </div>
+            <input type="number" class="form-control" style="text-align:right" [ngModelOptions]="{standalone: true}" placeholder="" readonly [ngModel]="mainService.totalGeneratedPoints" >          
+            <p class="ml-2 mr-2 mt-2" style="margin:0; font-weight: bold; vertical-align: middle">Points</p>
+          </div> 
+          <div class="input-group mt-2 ml-2">
+            <div class="input-group-prepend">
+              <span class="input-group-text" style="width: 200px">Total Points Exchanged </span>
+            </div>
+            <input type="number" class="form-control" style="text-align:right" [ngModelOptions]="{standalone: true}" placeholder="" readonly [ngModel]="mainService.totalExchangedPoints" >          
+            <p class="ml-2 mr-2 mt-2" style="margin:0; font-weight: bold; vertical-align: middle">Points</p>
+          </div>                      
+          <div class="input-group mt-2 ml-2">
+              <div class="input-group-prepend">
+                <span class="input-group-text" style="width: 200px">Total Points Cleared </span>
+              </div>
+              <input type="number" class="form-control" style="text-align:right" [ngModelOptions]="{standalone: true}" placeholder="" readonly [ngModel]="mainService.totalClearedPoints" >          
+              <p class="ml-2 mr-2 mt-2" style="margin:0; font-weight: bold; vertical-align: middle">Points</p>
+            </div>            
+        </form>
+      </div>    
+    </div>
+  </div>
+  <div class="col-md-2" style="padding-left: 5px;padding-right: 5px;">
+    <div class="card border-tfm w-100 mt-4 mr-1"  style="height: 320px;">
+      <span class="card-header-tfm bg-main-header">Small Items</span>    
+      <div class="card-body">  
+        <img class="card-img-top" src= "assets/lata.jpg" style="width: 100%;height: 200px;"> 
+        <div class="input-group mt-2">            
+          <input type="text" class="form-control" style="text-align:right" [ngModelOptions]="{standalone: true}" placeholder="" readonly [ngModel]="mainService.totalPack1" >
+        </div>                      
+      </div>    
+    </div>
+  </div>
+  <div class="col-md-2" style="padding-left: 5px;padding-right: 5px;">
+    <div class="card border-tfm w-100 mt-4 mr-1"  style="height: 320px;">
+      <span class="card-header-tfm bg-main-header">Medum Items</span>    
+      <div class="card-body">  
+        <img class="card-img-top" src= "assets/vidrio.jpg" style="width: 100%;height: 200px;"> 
+        <div class="input-group mt-2">              
+          <input type="text" class="form-control" style="text-align:right" [ngModelOptions]="{standalone: true}" placeholder="" readonly [ngModel]="mainService.totalPack2" >                        
+        </div>            
+      </div>    
+    </div>
+  </div>
+  <div class="col-md-2" style="padding-left: 5px;padding-right: 5px;">
+    <div class="card border-tfm w-100 mt-4 mr-1"  style="height: 320px;">
+      <span class="card-header-tfm bg-main-header">Big Items</span>    
+      <div class="card-body">  
+        <img class="card-img-top" src= "assets/envase.jpg" style="width: 100%;height: 200px;"> 
+        <div class="input-group mt-2">                
+          <input type="text" class="form-control" style="text-align:right" [ngModelOptions]="{standalone: true}" placeholder="" readonly [ngModel]="mainService.totalPack3" >                          
+        </div>                                  
+      </div>    
+    </div>
+  </div>
+</div>
+
+<div class="row mr-1 ml-1" >
+    <div  class="card border-tfm w-100 ml-1 mt-4 mr-1" style="min-height: 320px;">
+      <span class="card-header-tfm bg-main-header" style="font-size: 1.4rem">Associated List
+          <button class="btn btn-link text-white" (click)="addAssociated()" style = "float: right">Add</button>                  
+      </span>
+      <div class="card-body">  
+        <table class="table tfm-table">
+          <thead>
+          <tr>        
+            <th scope="col">Name</th>
+            <th scope="col">Address Contract</th>
+            <th scope="col">Items</th>
+            <th scope="col">Generated</th>            
+            <th scope="col">Exchanged</th>            
+            <th scope="col">Cleared</th>
+            <th scope="col">Cans</th>
+            <th scope="col">Bottles</th>
+            <th scope="col">Container</th>          
+            <th scope="col">Status</th> 
+          </tr>
+          </thead>
+          <tbody>
+          <tr [style.color]="!associated.enable?'red':''" *ngFor="let associated of mainService?.associatedTable; index as i">
+            <td [style.color]="!associated.enable?'red':''" style="vertical-align: middle;" class="text-link" >{{ associated.name }}</td>
+            <td [style.color]="!associated.enable?'red':''" style="vertical-align: middle;font-family: 'Courier New', Courier, monospace;font-size: larger;text-decoration-line: underline"  (click)="openAsociated(associated)">{{ associated.contract_address }}</td>
+            <td style="vertical-align: middle;text-align: right;">{{ associated.exchangedItems }}</td>
+            <td style="vertical-align: middle;text-align: right;">{{ associated.generatedPoints }}</td>                        
+            <td style="vertical-align: middle;text-align: right;">{{ associated.exchangedPoints }}</td>
+            <td style="vertical-align: middle;text-align: right;">{{ associated.clearedPoints }}</td>
+            <td style="vertical-align: middle;text-align: right;">{{ associated.pack1 }}</td>
+            <td style="vertical-align: middle;text-align: right;">{{ associated.pack2 }}</td>
+            <td style="vertical-align: middle;text-align: right;">{{ associated.pack3 }}</td>
+            <td style="text-decoration-line: underline;"  (click)="enable(associated.hashName, associated.enable)">{{enableLabel(!associated.enable)}}</td>          
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>  
+ 
+
+
+

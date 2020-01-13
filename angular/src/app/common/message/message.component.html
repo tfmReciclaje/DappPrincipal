@@ -1,0 +1,12 @@
+<div class="card border-tfm w-100">
+  <span *ngIf="type!=''" class="card-header-tfm" style="background:#585756" >{{type}}      
+  </span>     
+  <div class="card-body card-body-tfm ml-2 mr-2">  
+    <p *ngIf="body!=''" style="background-color: antiquewhite; font-size: 0.8rem;justify-content: center">{{body}}</p>
+    <p style="margin-bottom: 0rem">{{details}}</p>
+  </div>
+  <div class="row justify-content-center mb-4 mt-2">
+    <button class="btn btn-mg btn-outline-secondary btn-tfm" type="submit" (click)="closeModal()">OK</button>    
+  </div>    
+</div>
+

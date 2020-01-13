@@ -1,0 +1,150 @@
+<div class="row mr-1 ml-1" style="padding-left: 5px;padding-right: 5px;">
+    <div class="card border-tfm w-100 ml-2 mt-4 mr-2" style="padding: 5px" >        
+      <span class="card-header-tfm bg-associated-header">Associated Name: {{mainService.getAssociatedName(associatedService.hashAssociatedName)}} 
+        <a class="text-white ml-1"  style = "color:white;cursor: pointer; float: left;text-decoration: underline;" (click)="main()">Main Contract</a> 
+      </span>       
+    </div>
+</div>
+
+<div class="row mr-1 ml-1" style="padding-left: 5px;padding-right: 5px;">
+  <div class="col-md-2">
+      <div class="card border-tfm w-100 mt-4 mr-1"  style="height: 320px;">
+        <span class="card-header-tfm bg-associated-header">Exchange Discount</span>    
+        <div class="row justify-content-center mt-4">
+          <button style="height: 240px; width: 160px; background-color: white;border-radius: 12px;cursor: pointer;" (click)="exchangeDicount()">
+            <img class="card-img-top" src= "assets/discount.png" style="width: 100%;max-height: 160px;">
+          </button>        
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card border-tfm w-100 mt-4" style="height: 320px">
+        <span class="card-header-tfm bg-associated-header">Total Associated Values
+        </span>    
+        <div class="card-body">  
+          <div class="form">
+            <div class="input-group mt-2 ml-2">
+              <div class="input-group-prepend">
+                <span class="input-group-text" style="width: 200px">Total Generated Balance </span>
+              </div>
+              <input type="text" class="form-control" style="text-align:right" [ngModelOptions]="{standalone: true}" placeholder="" readonly [ngModel]="associatedService.associatedInfo?._generatedPoints" >          
+              <p class="ml-2 mr-2 mt-2" style="margin:0; font-weight: bold; vertical-align: middle">Points</p>
+            </div> 
+            <div class="input-group mt-2 ml-2">
+              <div class="input-group-prepend">
+                <span class="input-group-text" style="width: 200px">Total Exchanged Points</span>
+              </div>
+              <input type="text" class="form-control" style="text-align:right" [ngModelOptions]="{standalone: true}" placeholder="" readonly [ngModel]="associatedService.associatedInfo?._exchangedPoints" >
+              <p class="ml-2 mr-2 mt-2" style="margin:0; font-weight: bold; vertical-align: middle">Points</p>
+            </div>                      
+            <div class="input-group mt-2 ml-2">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" style="width: 200px">Total Exchanged Items</span>
+                </div>
+                <input type="text" class="form-control" style="text-align:right" [ngModelOptions]="{standalone: true}" placeholder="" readonly [ngModel]="associatedService.associatedInfo?._exchangedItems" >          
+                <p class="ml-2 mr-2 mt-2" style="margin:0; font-weight: bold; vertical-align: middle">Points</p>
+              </div>  
+            <div class="input-group mt-2 ml-2">
+              <div class="input-group-prepend">
+                <span class="input-group-text" style="width: 200px">Total Cleared Points </span>
+              </div>
+              <input type="text" class="form-control" style="text-align:right" [ngModelOptions]="{standalone: true}" placeholder="" readonly [ngModel]="associatedService.associatedInfo?._clearedPoints" >          
+              <p class="ml-2 mr-2 mt-2" style="margin:0; font-weight: bold; vertical-align: middle">Points</p>
+            </div>
+            <div class="input-group mt-3 ml-2" style="padding-right:50px">
+              
+                <button  type="submit"  class="btn btn-mg btn-outline-secondary btn-tfm mr-2" style="width:100%;height: 50px;" (click)="clearPoints()">                  
+                  <span>Clear Points</span>
+                  <img class="ml-3" src= "assets/clear.png" style="width: 60px;height: 30px;"> 
+                </button>
+              
+            </div>
+          </div>
+        </div>    
+      </div>
+    </div>
+  <div class="col-md-2" style="padding-left: 5px;padding-right: 5px;">
+    <div class="card border-tfm w-100 mt-4 mr-1"  style="height: 320px;">
+      <span class="card-header-tfm bg-associated-header">Small Items
+      </span>    
+      <div class="card-body">  
+        <img class="card-img-top" src= "assets/lata.jpg" style="width: 100%;height: 200px;"> 
+        <div class="input-group mt-2">            
+          <input type="text" class="form-control" style="text-align:right" [ngModelOptions]="{standalone: true}" placeholder="" readonly [ngModel]="associatedService.associatedInfo?._pack1" >
+        </div>                      
+      </div>    
+    </div>
+  </div>
+  <div class="col-md-2" style="padding-left: 5px;padding-right: 5px;">
+    <div class="card border-tfm w-100 mt-4 mr-1"  style="height: 320px;">
+      <span class="card-header-tfm bg-associated-header">Medum Items</span>    
+      <div class="card-body">  
+        <img class="card-img-top" src= "assets/vidrio.jpeg" style="width: 100%;height: 200px;"> 
+        <div class="input-group mt-2">              
+          <input type="text" class="form-control" style="text-align:right" [ngModelOptions]="{standalone: true}" placeholder="" readonly [ngModel]="associatedService.associatedInfo?._pack2" >                        
+        </div>            
+      </div>    
+    </div>
+  </div>
+  <div class="col-md-2" style="padding-left: 5px;padding-right: 5px;">
+    <div class="card border-tfm w-100 mt-4 mr-1"  style="height: 320px;">
+      <span class="card-header-tfm bg-associated-header">Big Items
+      </span>    
+      <div class="card-body">  
+        <img class="card-img-top" src= "assets/envase.jpg" style="width: 100%;height: 200px;"> 
+        <div class="input-group mt-2">                
+          <input type="text" class="form-control" style="text-align:right" [ngModelOptions]="{standalone: true}" placeholder="" readonly [ngModel]="associatedService.associatedInfo?._pack3" >                          
+        </div>                                  
+      </div>    
+    </div>
+  </div>
+
+</div>
+    
+    
+<div class="row mr-1 ml-1" >
+  <div  class="card border-tfm w-100 ml-2 mt-4 mr-2" style="min-height: 320px; ">
+    <span class="card-header-tfm bg-associated-header" style="font-size: 1.4rem">Container List
+        <button class="btn btn-link text-white" (click)="addContainer()" style = "float: right">Add</button>                  
+    </span>
+    <div class="card-body">  
+      <table class="table tfm-table">
+        <thead>
+        <tr>        
+          <th scope="col">Id</th>
+          <th scope="col">Ref</th>            
+          <th scope="col">Inside Items</th>
+          <th scope="col">Exchanged Items</th>
+          <th scope="col">Generated Points</th>
+          <th scope="col">Small Items</th>
+          <th scope="col">Medium Items</th>
+          <th scope="col">Big Items</th>
+          <th scope="col">Start Date</th>
+          <th scope="col">State Date</th>                        
+          <th scope="col">Enabled</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let container of associatedService.containerTable; index as i" (click)="select(i, container)" (dblclick)="open(i, container)">                
+          <td style="vertical-align: middle;">{{ container.seqId }}</td>
+          <td [style.color]="!container.isEnable?'red':''" style="vertical-align: middle;" class="text-link" >{{ web3Service.web3.utils.toAscii(container.nameRef) }}</td>            
+          <td style="vertical-align: middle;text-align: right;">{{ container.insideItems }}</td>            
+          <td style="vertical-align: middle;text-align: right;">{{ container.exchangedItems }}</td>
+          <td style="vertical-align: middle;text-align: right;">{{ container.generatedPoints }}</td>
+          <td style="vertical-align: middle;text-align: right;">{{ container.pack1 }}</td>
+          <td style="vertical-align: middle;text-align: right;">{{ container.pack2 }}</td>
+          <td style="vertical-align: middle;text-align: right;">{{ container.pack3 }}</td>
+          <td style="vertical-align: middle;">{{ container.startDate | date: 'dd-MM-yyyy' }}</td>
+          <td style="vertical-align: middle;">{{ container.stateDate | date: 'dd-MM-yyyy'}}</td>                        
+          <td style="text-decoration-line: underline;" (click)="enable(container.container_address, container.isEnable)">{{container.isEnable}}</td>          
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+       
+</div>
+
+
+

@@ -1,0 +1,282 @@
+/* You can add global styles to this file, and also import other style files */
+@import "./bootstrap.min.css";
+
+
+.img-responsive{
+  height:auto;
+  width: auto;
+  max-height: 30px;
+  max-width: 30px;
+}
+
+.ng-valid[required], .ng-valid.required  {
+  border-left: 5px solid rgb(96, 167, 100); /* green */
+}
+
+.ng-invalid:not(form)  {
+  border-left: 5px solid #a75a59; /* red */
+}
+
+.ragstatus-green{    
+  background-color: rgb(207, 245, 226)
+}
+
+.ragstatus-green[readonly]{    
+  background-color: rgb(207, 245, 226)
+}
+
+.ragstatus-green:focus{    
+  background-color: rgb(207, 245, 226)
+}
+
+.ragstatus-red{
+  background-color: rgb(255, 209, 209)
+}
+
+.ragstatus-red[readonly]{
+  background-color: rgb(255, 209, 209)
+}
+
+.ragstatus-red:focus{
+  background-color: rgb(255, 209, 209)
+}
+
+.ragstatus-amber{
+  background-color: rgb(247, 234, 177)
+}
+
+.ragstatus-amber:focus{
+  background-color: rgb(247, 234, 177)
+}
+
+.ragstatus-amber[readonly]{
+  background-color: rgb(247, 234, 177)
+}
+
+.border-tfm {
+    border-color: #14521c;
+    border-width: 1px;
+  }
+
+.bg-main-header {
+  background: rgb(96, 167, 100);
+}
+
+.bg-associated-header {
+  background: rgb(105, 133, 127);
+}
+
+.btn-tfm{
+  min-width: 6rem;
+}
+
+.text-tfm-header {
+  color: rgb(238, 226, 226);
+  padding:0px;
+  margin-left:5px;
+  margin-right:5px;
+  font-size: 1.2rem;
+  vertical-align: center;
+}
+
+.bg-tfm {
+    background-color: rgb(96, 167, 100);
+  }
+
+.card-header-tfm {    
+    padding: .05rem .05rem;    
+    margin-top: 0;    
+    margin-bottom: 0;    
+    border-bottom: 1px solid rgba(0,0,0,.125);
+    color: rgb(255, 255, 255);
+    font-size: 1.2rem;
+    text-align: center
+}
+
+.card-border-tfm { 
+  border-color: rgb(62, 146, 66);
+}
+
+.card-close-tfm { 
+  color:white;
+  font-size: 1.3rem;
+  text-align: right;
+  float: right
+}
+
+.card-body-tfm{
+  padding: .6rem .6rem;  
+  
+}
+
+/* unvisited link */
+.text-link {
+  color: red;  
+}
+
+/* visited link */
+.text-link:visited {
+  color: green;
+}
+
+/* mouse over link */
+.text-link:hover {
+  color: hotpink;
+  cursor: pointer;
+}
+
+/* selected link */
+.text-link:active {
+  color: blue;
+}
+
+.tfm-table {
+  background-color: rgb(240, 240, 240);
+  border: 2px solid white;
+  border-collapse: collapse;  
+  font-size: 1rem;  
+  margin-bottom: 0;    
+}
+
+.tfm-table th { 
+  padding-left: 6px;
+  padding-right: 6px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border: 3px solid white;
+  text-align: left;
+  background-color: rgb(117, 117, 117);
+  font-weight: normal;
+  color: white;
+  height: 2.0rem;  
+}
+
+.tfm-table td { 
+
+  padding-left: 6px;
+  padding-right: 6px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  text-align: left;  
+  color: rgb(24, 24, 24);    
+  border: solid white 3px;  
+}
+
+.tfm-table tr.active td {
+  background-color:#cf504b !important;
+  color: white;
+}
+
+.tfm-table > tbody >tr:hover {
+  background-color:  rgb(245, 184, 184);
+  cursor: pointer;
+}
+
+.tfm-table-input input {
+  font-size: 0.8rem;      
+  margin: 0.05rem;    
+  text-align: right;
+  border: 1px;
+  border-radius: .0rem;  
+}
+
+.tfm-table-input td { 
+  padding: 0px;  
+  background-color: rgb(240, 238, 238);
+  color: rgb(34, 22, 85);  
+  min-width:6rem;
+}
+
+.tfm-table-resources-header th { 
+  font-size: 0.8rem;
+  background-color: rgb(77, 73, 73);
+  max-height: 1.4rem;
+  padding-bottom: 6px;
+}
+
+.tfm-table-resources-header2 { 
+  font-size: 0.8rem;
+  background-color: #ff1e00;
+  max-height: 1.4rem;  
+}
+
+.tfm-table-resources td { 
+  padding-top: 2px;
+  padding-bottom: 2px;
+  max-height: 1.4rem;  
+}
+
+.tfm-table-resources th { 
+  color: rgb(238, 226, 226);
+  padding-top: 2px;  
+  max-height: 1.4rem;
+}
+
+.tfm-table-resources-input input{ 
+  font-size: 0.8rem;      
+  margin: 0.05rem;    
+  text-align: right;
+  border: 1px;
+  border-radius: .0rem;  
+  max-height: 1.3rem;  
+  width:5rem;
+}
+
+.tfm-table-resources-input td { 
+  padding: 0px;  
+  background-color: rgb(240, 238, 238);
+  color: rgb(34, 22, 85);    
+  height: 1.5rem;
+}
+
+.tfm-table-resources-totales td { 
+  padding: 0px;  
+  background-color: rgb(240, 238, 238);
+  color: rgb(34, 22, 85);  
+  min-width:6rem;
+}
+
+
+table tr td.ragstatus-status
+{
+    vertical-align:middle;
+    font-weight: bold; 
+    font-size: 0.8rem
+}
+
+table tr td.ragstatus-history-value
+{
+    vertical-align:middle;
+    text-align: center;
+}
+
+table tr td.ragstatus-value
+{
+    padding:0; 
+    padding-top:0px;
+    padding-bottom: 0px
+}
+
+input.ragstatus-input
+{
+    height: 3.5rem;
+    vertical-align:middle;
+    text-align: center
+}
+
+.indicators-button
+{
+    border: 0;
+    background: none;
+    -webkit-appearance: none;    
+    vertical-align:middle;
+    text-align: center;
+    font-weight: bold;
+    padding:0.5rem;
+    margin:0 
+}
+
+
+
+
+ 

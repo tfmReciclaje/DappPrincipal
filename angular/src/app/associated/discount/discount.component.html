@@ -1,0 +1,55 @@
+<div class="card border-tfm w-100">
+  <span  class="card-header-tfm bg-associated-header" >Exchange Discount
+      <button type="button" class="close card-close-tfm"  [attr.aria-label]="'Close'" (click)="closeModal()"><span aria-hidden="true">&times;</span></button>                  
+  </span>  
+
+  <div class="card-body card-body-tfm">        
+
+    <div class="form mb-4 mt-2 ml-2 mr-2">
+      <div class="input-group mb-1">
+        <div class="input-group-prepend">
+          <span class="input-group-text">User Name</span>
+        </div>
+        <input type="text" class="form-control" placeholder="" required [(ngModel)]="userName">
+      </div>      
+      <div class="input-group mb-1">
+        <div class="input-group-prepend">
+          <span class="input-group-text">Secret Word</span>
+        </div>
+        <input type="password" class="form-control" placeholder="" required [(ngModel)]="secretWord" >
+      </div>                            
+    </div>      
+
+    <div class="row justify-content-center mb-2 mt-2">
+      <button *ngIf="!checked" class="btn btn-lg btn-outline-secondary btn-tfm " type="submit"(click)="checkUserName()">Check</button>
+      <span *ngIf="checked">
+        <img class=" ml-1" src= "assets/check.jpg" style="width: 50px;height: 30px;">        
+      </span>
+    </div>
+
+
+    <div class="form mb-4 mt-4 ml-2 mr-2"> 
+      <div class="input-group mb-1">
+        <div class="input-group-prepend">
+          <span class="input-group-text">User Points</span>
+        </div>
+        <input type="number" class="form-control" placeholder="" readonly [(ngModel)]="userBalance">
+      </div>      
+      <div class="input-group ">
+        <div class="input-group-prepend">
+          <span class="input-group-text">Exchange Points</span>
+        </div>
+        <input type="number" class="form-control" placeholder="" required [(ngModel)]="amount">
+      </div>                                       
+    </div>            
+
+    <div class="row justify-content-center mb-2 mt-2 m-2 mr-2;padding: 10px">
+      <button *ngIf="!done" class="card-body ml-2 mr-2" style="padding: 10px;height: 220px; width: 220px; background-color: white;border-radius: 12px;" (click)="discount()">
+        <img class="card-img-top" src= "assets/discount.jpg" style="width: 190px;height: 180px;">           
+      </button>              
+      <button *ngIf="done" class="card-body ml-2 mr-2" style="padding: 10px;height: 220px; width: 220px; background-color: white;border-radius: 12px;" (click)="close()">
+        <img class="card-img-top" src= "assets/valido.png" style="width: 190px;height: 180px;">           
+      </button>
+    </div>                              
+    
+</div> 
