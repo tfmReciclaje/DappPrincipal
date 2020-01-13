@@ -1,0 +1,19 @@
+{
+  "name": "truffle",
+  "version": "0.0.0",
+  "license": "MIT",
+  "scripts": {},
+  "private": true,
+  "dependencies": {
+    "core-js": "^2.5.7",
+    "ethers": "^4.0.20",
+    "truffle-contract": "^4.0.1",
+    "tslib": "^1.9.0",
+    "zone.js": "^0.8.26"
+  },
+  "devDependencies": {
+    "openzeppelin-solidity": "^2.4.0",
+    "webpack": "^4.26.1",
+    "webpack-dev-server": "^3.1.10"
+  }
+}

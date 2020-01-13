@@ -1,0 +1,335 @@
+pragma solidity ^0.5.1;
+
+import "./lib/AdminRole.sol";
+import "./lib/MngrRole.sol";
+import "./lib/PausableMngr.sol";
+import "./Main.sol";
+
+import "./lib/SafeMath.sol";
+
+contract Associated_FC is PausableMngr, AdminRole {
+
+    using SafeMath for uint;
+
+    event Generate(address indexed container_address, bytes32 indexed hashName, uint256 points);
+
+	// Variables Globales
+    uint generatedPoints; // Puntos generados en el contenedor
+    uint exchangedItems;  // Items generados
+	uint exchangedPoints; // Puntos canjeados por descuentos desde el asociado
+    uint clearedPoints;   // Puntos Liquidados por Ecoembes, en caso que se diera
+    uint pack1; // Número de items de tipo 1
+	uint pack2; // Número de items de tipo 2
+	uint pack3; // Número de items de tipo 3
+
+    bool status;	                // Estado del Asociado
+	bytes32 hashAssociatedName;     // hash del nombe del asociado
+	uint counterContainer;          // Contador de Contenedores
+
+    Main main;// Referencia del contrato principal, para conocer su Address
+
+    mapping (address => Container) public listContainers; //*  Lista de contenedores por Asociado
+    address[] internal containerList;
+    address internal associatedAddress; //Dirección de la cuenta administradora del asociado
+
+
+   constructor (bytes32 _hashAssociatedName, address _associatedAddress ) public payable {
+
+       main= Main(msg.sender);  // Dirección del contrato Principal
+
+	   hashAssociatedName = _hashAssociatedName;// Nombre del Asociado Hasheado
+       associatedAddress = _associatedAddress;
+       addAdmin(_associatedAddress); //Añadimos la cuenta del asocaido como administradora del contrato       
+    }
+
+    /*
+    function getHashAssociatedName() public view returns (bytes32) {
+		return hashAssociatedName;
+	}
+    */
+
+	// Recupera la información de los puntos del asociado
+    function getAssociatedInfo() public view returns (uint _generatedPoints, uint _exchangedPoints, uint _exchangedItems, uint _clearedPoints, uint _pack1, uint _pack2, uint _pack3) {
+		return (generatedPoints, exchangedPoints, exchangedItems, clearedPoints, pack1, pack2, pack3 );
+	}
+
+    /*
+    function getGeneratedPoints() public view returns (uint) {
+		return generatedPoints;
+	}
+    */
+
+	// Actualiza los puntos generados del asociado
+    function updateGeneratedPoints(uint points) internal  {
+		generatedPoints += points;
+	}
+
+    // Actualiza los puntos canjeados del asociado
+    function updateExchangeItems(uint items) internal  {
+		exchangedItems += items;
+	}
+
+    // Actualiza el número de Items reciclados
+    function updateRecycItems(uint _pack1, uint _pack2, uint _pack3) internal  {
+		pack1 += _pack1;
+        pack2 += _pack2;
+        pack3 += _pack3;
+	}
+
+/*
+	function getNumItemsbyType() public view returns (uint, uint, uint){
+
+		return (pack1, pack2, pack3) ;
+
+	}
+*/
+
+	/*@dev Obtener el numero de contenedores por Asociado
+	* Return, uint
+	*/
+
+/*
+	function getNumContainers() public view returns (uint){
+		return counterContainer;
+
+	}
+*/
+
+    /*@dev Añadir Container al asociado
+    * @param _nameRef,   Identificador del contenedor Hasheado.
+    * @param _containerAddress, Address de Ethereum del contenedor, parametro que vendria desde el Frontend
+    * Modificador, whenNotPaused del contrato Pausable, en caso de Pausable, no se puede ejecutar esta función.
+    */
+	function addContainer(bytes32 _nameRef, address _container_address) public onlyAdmin whenNotPaused  (){
+
+		//_nameRef y container address no pueden estar vacias a la hora de crear contenerdor.
+	    require(
+            bytes32(_nameRef).length > 0 && _container_address != address(0), "Container Name and Address should be fill!");
+
+        //El address del contenedor ya esta en la lista
+        require(!(listContainers[_container_address].seqId > 0), "Address already exist!");
+        require((listContainers[_container_address].nameRef != _nameRef), "nameRef already exist!");
+
+
+
+
+        //Inicializa el QR de la bolsa del contenedor
+        //la App del contenedor debe de colocar este QR a la primera bolsa
+        //bytes32 _InitialQR = bytes32(uint256(keccak256(_container)));
+
+		counterContainer++;
+
+        //Inicializa la estructura del Contenedor y lo añade al ArrayList
+
+        listContainers[_container_address] = Container(counterContainer, _nameRef, 0, 0, 0, 0, 0, 0, 0, now, now, true, associatedAddress);
+        containerList.push(_container_address);
+	}
+
+    /*@dev getContainerList,  Devuelve la lista de Contenedores para un asociado
+	* Return, address[]
+	*/
+    function getContainerList() public view returns (address[] memory) {
+		return containerList;
+	}
+
+    /*@dev exchangePoints,  La App de Canjear Puntos llamara a esta funcion desde la Applicacion
+	* Return, uint
+	*/
+	function exchangePoints(bytes32 _userHashcode, bytes32 _hashedSecret, uint _amount ) public onlyAdmin whenNotPaused returns (bool){
+
+        bool result = main.exchangePoints(hashAssociatedName, _userHashcode, _amount, _hashedSecret); //El contrato es quien llama al exchange del principal. Esto permite aislar mejor las operaciones del asociado conj las operaciones del contrato principal
+        if (result){
+
+            exchangedPoints = exchangedPoints.add(_amount);
+            return true;
+        }
+        return false;
+    }
+
+    /*@dev clearPoints,  En caso de que el Asociado necesitara canjear Puntos con Ecoembes
+	* Return, bool
+	*/
+    function clearPoints(uint _amount ) public onlyMngr whenNotPaused returns (bool){
+
+        exchangedPoints = exchangedPoints.sub(_amount, "clearPoints: transfer amount exceeds balance");
+        clearedPoints = clearedPoints.add(_amount);
+
+        return true;
+    }
+
+
+
+    /*@dev getUserBalance, La aplicacione del contenedor llamará a esta función
+    * para conocer los puntos de usuaario
+	* Return, uint
+	*/
+    function getUserBalance( bytes32 _userHashcode) public view returns (uint256) {
+		 return main.balanceOf(_userHashcode);
+	}
+
+    //Llamada desde el Frontend del Contenedor  ???¿¿¿¿¿¿¿
+    /*
+    function updateAssociatedPoints(uint _amount, address _container) public   {
+
+        require (listContainers[_container].isEnable, "Container is not Active!");
+        updateGeneratedPoints(_amount);
+	}
+    */
+
+
+	//----------------------------------------------------------------------------------------------------
+    //------------------    CONTENEDOR   -----------------------------------------------------------------
+    //----------------------------------------------------------------------------------------------------
+
+    //Modelo de Datos de un Contenedor
+    struct Container {
+        uint seqId;
+		bytes32 nameRef;
+        uint insideItems;
+        uint exchangedItems;
+        uint generatedPoints;
+        uint txCount;
+        uint pack1;
+        uint pack2;
+        uint pack3;
+        uint startDate;
+        uint stateDate;
+        bool isEnable;
+        address associated;
+       // bytes32 currentQRBag;// Para que el usuario pudiera tener visualizacion de los residuos que ha introducido 
+                             // es necesario que se le pase al ususario este QR
+                             //Mejor que el QR se gestione en el Contenedor
+	}
+
+    /*
+      * @dev Validará que el sender este registrado como un contenedor
+      */
+    modifier onlyContainerEnable() {
+        require(listContainers[msg.sender].startDate > 0, "The sender is not a valid container");
+        require(listContainers[msg.sender].isEnable, "The sender is not a container enable");
+        _;
+    }
+
+
+    /*
+      * @dev Función para la asignación de puntos por la recogida de envases
+      *
+      * @param _hashUserName
+      * @param _hashedSecret
+      * @param _pack1
+      * @param _pack2
+      * @param _pack3
+
+      */
+
+     //JM: He quitado como parametro el uint _points por _amount, seria el numero total de elementos reciclados
+    function packagingCollection(bytes32 _hashUserName,  bytes32 _hashedSecret, uint _pack1, uint _pack2, uint _pack3)
+    public onlyContainerEnable whenNotPaused returns (bool){
+
+        //* Actualiza contenedor
+        uint points;
+        uint ammount = _pack1 + _pack2 + _pack3;
+
+        require (ammount > 0, "Number of items is not greater than zero");        
+
+        listContainers[msg.sender].txCount += 1;
+        listContainers[msg.sender].insideItems = listContainers[msg.sender].insideItems.add(ammount);
+        listContainers[msg.sender].exchangedItems = listContainers[msg.sender].exchangedItems.add(ammount);
+
+        //Actualiza los diferentes tipos de residuos
+        listContainers[msg.sender].pack1 = listContainers[msg.sender].pack1.add(_pack1);
+        listContainers[msg.sender].pack2 = listContainers[msg.sender].pack2.add(_pack2);
+        listContainers[msg.sender].pack3 = listContainers[msg.sender].pack3.add(_pack3);
+
+        updateRecycItems(_pack1, _pack2, _pack3);
+        updateExchangeItems(_pack1 + _pack2 + _pack3);
+
+        //Calcular puntos, donde se calcula el valor por punto, en Principal.
+        points = main.calculatePoints(_pack1, _pack2, _pack3);
+
+        //TODO enn la aplicacion del contenedor tendria que pasarle el QR de la bolsa al usuario/
+        //actualiza los Puntos del Usuario:
+        bool result = main.updateUserBalance(hashAssociatedName, _hashUserName, points, _hashedSecret);
+		if (result){
+            listContainers[msg.sender].generatedPoints += points;
+            updateGeneratedPoints(points);
+
+            emit Generate(msg.sender, _hashUserName, points);
+
+            return true;
+        }else {
+             return false;
+        }
+
+    }
+
+    /*
+      * @dev isEnableContainer: Valida si un contenedor está activo
+      * 
+      * @param _container Address del contenedor
+      * 
+      * @return bool
+      */    
+    function isEnableContainer(address _container) public view returns (bool) {
+        require(_container != address(0), "Container address is not valid");
+        
+        return listContainers[_container].isEnable;
+    }
+
+
+    /*
+      * @dev enableContainer: Función para habilitar un contenedor
+      *
+      * @param _container Address del container
+      */
+    function enableContainer(address _container) public onlyAdmin whenNotPaused {
+        
+        require (!(listContainers[_container].isEnable), "Container already enable");
+
+        listContainers[_container].stateDate = now;
+        listContainers[_container].isEnable = true;
+    }
+
+    function disableContainer(address _container) public onlyAdmin whenNotPaused {
+        require (listContainers[_container].isEnable, "Container is not enable");
+        listContainers[_container].stateDate = now;
+        listContainers[_container].isEnable = false;
+    }
+
+/*
+    function pauseContainerContract() private  whenNotPaused {
+        pause();
+    }
+
+    function unpauseContainerContract() private  whenPaused {
+        unpause();
+    }
+*/
+
+    //Identificación, Monitorización y Cambio de Estado de las bolsas de los contenedores
+    //Llama desde el  contenedor cuando se ha llenado una bolsa y se 
+    //sube al Fronend para su seguimiento y posible cambio de estado
+
+     function addRecycledBag(bytes32 _hashAssociatedName, bytes32 _QR, address _associated, bytes32 _nameRef,  uint _item_1, uint _item_2, uint _item_3 ) onlyContainerEnable public returns (bool) {     
+
+         bool result = main.addRecicledBag(hashAssociatedName, _QR, _associated, _nameRef, _item_1, _item_2, _item_3);
+		if (result){
+            //* Actualiza las latas que se han introducido en el contenedor del asociado  y inicializa valores del contenedos          
+            updateRecycItems(listContainers[msg.sender].pack1, listContainers[msg.sender].pack2, listContainers[msg.sender].pack3);
+            
+            //Inicializa el contenedor a 0
+            listContainers[msg.sender].pack1 = 0;
+            listContainers[msg.sender].pack2 = 0;
+            listContainers[msg.sender].pack3 = 0;
+            listContainers[msg.sender].insideItems = 0;
+
+            return true;
+
+        }else {
+             return false;
+        }
+
+     }
+
+
+}
