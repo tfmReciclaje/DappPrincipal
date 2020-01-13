@@ -77,7 +77,7 @@ contract Associated_FC is PausableMngr, AdminRole {
      * @param _items Elementos reciclados.
      **/
     function updateExchangeItems(uint _items) internal  {
-		exchangedItems += items;
+		exchangedItems += _items;
 	}
 
 
@@ -98,7 +98,7 @@ contract Associated_FC is PausableMngr, AdminRole {
     /**
     * @dev Añadir Contenedor al asociado, sólo ejecutable por Admin
     * @param _nameRef   Identificador Referencia del contenedor.
-    * @param _containerAddress Address Ethereum del contenedor, parámetro que vendria desde el Frontend
+    * @param _container_address Address Ethereum del contenedor, parámetro que vendria desde el Frontend
     * 
     */
 	function addContainer(bytes32 _nameRef, address _container_address) public onlyAdmin whenNotPaused  (){

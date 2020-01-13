@@ -1,0 +1,2615 @@
+{
+  "contractName": "TracerRole",
+  "abi": [
+    {
+      "inputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "account",
+          "type": "address"
+        }
+      ],
+      "name": "TracerAdded",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "account",
+          "type": "address"
+        }
+      ],
+      "name": "TracerRemoved",
+      "type": "event"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "account",
+          "type": "address"
+        }
+      ],
+      "name": "isTracer",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "account",
+          "type": "address"
+        }
+      ],
+      "name": "addTracer",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "renounceTracer",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "metadata": "",
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "pragma solidity ^0.5.0;\n\nimport \"./Context.sol\";\nimport \"./Roles.sol\";\n\n/**\n * @title TracerRole\n * @dev Tracer are responsible for assigning and removing Whitelisted accounts.\n */\ncontract TracerRole is Context {\n    using Roles for Roles.Role;\n\n    event TracerAdded(address indexed account);\n    event TracerRemoved(address indexed account);\n\n    Roles.Role private _Tracer;\n\n    constructor () internal {\n        _addTracer(_msgSender());\n    }\n\n    modifier onlyTracer() {\n        require(isTracer(_msgSender()), \"TracerRole: caller does not have the Tracer role\");\n        _;\n    }\n\n    function isTracer(address account) public view returns (bool) {\n        return _Tracer.has(account);\n    }\n\n    function addTracer(address account) public onlyTracer {\n        _addTracer(account);\n    }\n\n    function renounceTracer() public {\n        _removeTracer(_msgSender());\n    }\n\n    function _addTracer(address account) internal {\n        _Tracer.add(account);\n        emit TracerAdded(account);\n    }\n\n    function _removeTracer(address account) internal {\n        _Tracer.remove(account);\n        emit TracerRemoved(account);\n    }\n}",
+  "sourcePath": "/home/cesar/master/DappPrincipal/truffle/contracts/lib/TraceRole.sol",
+  "ast": {
+    "absolutePath": "/home/cesar/master/DappPrincipal/truffle/contracts/lib/TraceRole.sol",
+    "exportedSymbols": {
+      "TracerRole": [
+        4231
+      ]
+    },
+    "id": 4232,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 4126,
+        "literals": [
+          "solidity",
+          "^",
+          "0.5",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:23:12"
+      },
+      {
+        "absolutePath": "/home/cesar/master/DappPrincipal/truffle/contracts/lib/Context.sol",
+        "file": "./Context.sol",
+        "id": 4127,
+        "nodeType": "ImportDirective",
+        "scope": 4232,
+        "sourceUnit": 3510,
+        "src": "25:23:12",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "/home/cesar/master/DappPrincipal/truffle/contracts/lib/Roles.sol",
+        "file": "./Roles.sol",
+        "id": 4128,
+        "nodeType": "ImportDirective",
+        "scope": 4232,
+        "sourceUnit": 3938,
+        "src": "49:21:12",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "baseContracts": [
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 4129,
+              "name": "Context",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 3509,
+              "src": "204:7:12",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_Context_$3509",
+                "typeString": "contract Context"
+              }
+            },
+            "id": 4130,
+            "nodeType": "InheritanceSpecifier",
+            "src": "204:7:12"
+          }
+        ],
+        "contractDependencies": [
+          3509
+        ],
+        "contractKind": "contract",
+        "documentation": "@title TracerRole\n@dev Tracer are responsible for assigning and removing Whitelisted accounts.",
+        "fullyImplemented": true,
+        "id": 4231,
+        "linearizedBaseContracts": [
+          4231,
+          3509
+        ],
+        "name": "TracerRole",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "id": 4133,
+            "libraryName": {
+              "contractScope": null,
+              "id": 4131,
+              "name": "Roles",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 3937,
+              "src": "224:5:12",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_Roles_$3937",
+                "typeString": "library Roles"
+              }
+            },
+            "nodeType": "UsingForDirective",
+            "src": "218:27:12",
+            "typeName": {
+              "contractScope": null,
+              "id": 4132,
+              "name": "Roles.Role",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 3872,
+              "src": "234:10:12",
+              "typeDescriptions": {
+                "typeIdentifier": "t_struct$_Role_$3872_storage_ptr",
+                "typeString": "struct Roles.Role"
+              }
+            }
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 4137,
+            "name": "TracerAdded",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 4136,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 4135,
+                  "indexed": true,
+                  "name": "account",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4137,
+                  "src": "269:23:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 4134,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "269:7:12",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "268:25:12"
+            },
+            "src": "251:43:12"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 4141,
+            "name": "TracerRemoved",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 4140,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 4139,
+                  "indexed": true,
+                  "name": "account",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4141,
+                  "src": "319:23:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 4138,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "319:7:12",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "318:25:12"
+            },
+            "src": "299:45:12"
+          },
+          {
+            "constant": false,
+            "id": 4143,
+            "name": "_Tracer",
+            "nodeType": "VariableDeclaration",
+            "scope": 4231,
+            "src": "350:26:12",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_struct$_Role_$3872_storage",
+              "typeString": "struct Roles.Role"
+            },
+            "typeName": {
+              "contractScope": null,
+              "id": 4142,
+              "name": "Roles.Role",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 3872,
+              "src": "350:10:12",
+              "typeDescriptions": {
+                "typeIdentifier": "t_struct$_Role_$3872_storage_ptr",
+                "typeString": "struct Roles.Role"
+              }
+            },
+            "value": null,
+            "visibility": "private"
+          },
+          {
+            "body": {
+              "id": 4151,
+              "nodeType": "Block",
+              "src": "407:41:12",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "arguments": [],
+                        "expression": {
+                          "argumentTypes": [],
+                          "id": 4147,
+                          "name": "_msgSender",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 3497,
+                          "src": "428:10:12",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_function_internal_view$__$returns$_t_address_payable_$",
+                            "typeString": "function () view returns (address payable)"
+                          }
+                        },
+                        "id": 4148,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "kind": "functionCall",
+                        "lValueRequested": false,
+                        "names": [],
+                        "nodeType": "FunctionCall",
+                        "src": "428:12:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address_payable",
+                          "typeString": "address payable"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_address_payable",
+                          "typeString": "address payable"
+                        }
+                      ],
+                      "id": 4146,
+                      "name": "_addTracer",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 4214,
+                      "src": "417:10:12",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_nonpayable$_t_address_$returns$__$",
+                        "typeString": "function (address)"
+                      }
+                    },
+                    "id": 4149,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "417:24:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 4150,
+                  "nodeType": "ExpressionStatement",
+                  "src": "417:24:12"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 4152,
+            "implemented": true,
+            "kind": "constructor",
+            "modifiers": [],
+            "name": "",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 4144,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "395:2:12"
+            },
+            "returnParameters": {
+              "id": 4145,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "407:0:12"
+            },
+            "scope": 4231,
+            "src": "383:65:12",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 4163,
+              "nodeType": "Block",
+              "src": "476:111:12",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "arguments": [
+                          {
+                            "argumentTypes": null,
+                            "arguments": [],
+                            "expression": {
+                              "argumentTypes": [],
+                              "id": 4156,
+                              "name": "_msgSender",
+                              "nodeType": "Identifier",
+                              "overloadedDeclarations": [],
+                              "referencedDeclaration": 3497,
+                              "src": "503:10:12",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_address_payable_$",
+                                "typeString": "function () view returns (address payable)"
+                              }
+                            },
+                            "id": 4157,
+                            "isConstant": false,
+                            "isLValue": false,
+                            "isPure": false,
+                            "kind": "functionCall",
+                            "lValueRequested": false,
+                            "names": [],
+                            "nodeType": "FunctionCall",
+                            "src": "503:12:12",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_address_payable",
+                              "typeString": "address payable"
+                            }
+                          }
+                        ],
+                        "expression": {
+                          "argumentTypes": [
+                            {
+                              "typeIdentifier": "t_address_payable",
+                              "typeString": "address payable"
+                            }
+                          ],
+                          "id": 4155,
+                          "name": "isTracer",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 4177,
+                          "src": "494:8:12",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_function_internal_view$_t_address_$returns$_t_bool_$",
+                            "typeString": "function (address) view returns (bool)"
+                          }
+                        },
+                        "id": 4158,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "kind": "functionCall",
+                        "lValueRequested": false,
+                        "names": [],
+                        "nodeType": "FunctionCall",
+                        "src": "494:22:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "hexValue": "547261636572526f6c653a2063616c6c657220646f6573206e6f742068617665207468652054726163657220726f6c65",
+                        "id": 4159,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": true,
+                        "kind": "string",
+                        "lValueRequested": false,
+                        "nodeType": "Literal",
+                        "src": "518:50:12",
+                        "subdenomination": null,
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_stringliteral_b3cff1a44aec8349823aac92d0307532583ac2f7370f365f9a629203a9e22496",
+                          "typeString": "literal_string \"TracerRole: caller does not have the Tracer role\""
+                        },
+                        "value": "TracerRole: caller does not have the Tracer role"
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        },
+                        {
+                          "typeIdentifier": "t_stringliteral_b3cff1a44aec8349823aac92d0307532583ac2f7370f365f9a629203a9e22496",
+                          "typeString": "literal_string \"TracerRole: caller does not have the Tracer role\""
+                        }
+                      ],
+                      "id": 4154,
+                      "name": "require",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [
+                        10545,
+                        10546
+                      ],
+                      "referencedDeclaration": 10546,
+                      "src": "486:7:12",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
+                        "typeString": "function (bool,string memory) pure"
+                      }
+                    },
+                    "id": 4160,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "486:83:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 4161,
+                  "nodeType": "ExpressionStatement",
+                  "src": "486:83:12"
+                },
+                {
+                  "id": 4162,
+                  "nodeType": "PlaceholderStatement",
+                  "src": "579:1:12"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 4164,
+            "name": "onlyTracer",
+            "nodeType": "ModifierDefinition",
+            "parameters": {
+              "id": 4153,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "473:2:12"
+            },
+            "src": "454:133:12",
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 4176,
+              "nodeType": "Block",
+              "src": "655:44:12",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 4173,
+                        "name": "account",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 4166,
+                        "src": "684:7:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": null,
+                        "id": 4171,
+                        "name": "_Tracer",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 4143,
+                        "src": "672:7:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_struct$_Role_$3872_storage",
+                          "typeString": "struct Roles.Role storage ref"
+                        }
+                      },
+                      "id": 4172,
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "has",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 3936,
+                      "src": "672:11:12",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_view$_t_struct$_Role_$3872_storage_ptr_$_t_address_$returns$_t_bool_$bound_to$_t_struct$_Role_$3872_storage_ptr_$",
+                        "typeString": "function (struct Roles.Role storage pointer,address) view returns (bool)"
+                      }
+                    },
+                    "id": 4174,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "672:20:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "functionReturnParameters": 4170,
+                  "id": 4175,
+                  "nodeType": "Return",
+                  "src": "665:27:12"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 4177,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "isTracer",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 4167,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 4166,
+                  "name": "account",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4177,
+                  "src": "611:15:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 4165,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "611:7:12",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "610:17:12"
+            },
+            "returnParameters": {
+              "id": 4170,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 4169,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4177,
+                  "src": "649:4:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 4168,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "649:4:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "648:6:12"
+            },
+            "scope": 4231,
+            "src": "593:106:12",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 4188,
+              "nodeType": "Block",
+              "src": "759:36:12",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 4185,
+                        "name": "account",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 4179,
+                        "src": "780:7:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      ],
+                      "id": 4184,
+                      "name": "_addTracer",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 4214,
+                      "src": "769:10:12",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_nonpayable$_t_address_$returns$__$",
+                        "typeString": "function (address)"
+                      }
+                    },
+                    "id": 4186,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "769:19:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 4187,
+                  "nodeType": "ExpressionStatement",
+                  "src": "769:19:12"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 4189,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [
+              {
+                "arguments": null,
+                "id": 4182,
+                "modifierName": {
+                  "argumentTypes": null,
+                  "id": 4181,
+                  "name": "onlyTracer",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 4164,
+                  "src": "748:10:12",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_modifier$__$",
+                    "typeString": "modifier ()"
+                  }
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "748:10:12"
+              }
+            ],
+            "name": "addTracer",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 4180,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 4179,
+                  "name": "account",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4189,
+                  "src": "724:15:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 4178,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "724:7:12",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "723:17:12"
+            },
+            "returnParameters": {
+              "id": 4183,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "759:0:12"
+            },
+            "scope": 4231,
+            "src": "705:90:12",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 4197,
+              "nodeType": "Block",
+              "src": "834:44:12",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "arguments": [],
+                        "expression": {
+                          "argumentTypes": [],
+                          "id": 4193,
+                          "name": "_msgSender",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 3497,
+                          "src": "858:10:12",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_function_internal_view$__$returns$_t_address_payable_$",
+                            "typeString": "function () view returns (address payable)"
+                          }
+                        },
+                        "id": 4194,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "kind": "functionCall",
+                        "lValueRequested": false,
+                        "names": [],
+                        "nodeType": "FunctionCall",
+                        "src": "858:12:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address_payable",
+                          "typeString": "address payable"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_address_payable",
+                          "typeString": "address payable"
+                        }
+                      ],
+                      "id": 4192,
+                      "name": "_removeTracer",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 4230,
+                      "src": "844:13:12",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_nonpayable$_t_address_$returns$__$",
+                        "typeString": "function (address)"
+                      }
+                    },
+                    "id": 4195,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "844:27:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 4196,
+                  "nodeType": "ExpressionStatement",
+                  "src": "844:27:12"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 4198,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "renounceTracer",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 4190,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "824:2:12"
+            },
+            "returnParameters": {
+              "id": 4191,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "834:0:12"
+            },
+            "scope": 4231,
+            "src": "801:77:12",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 4213,
+              "nodeType": "Block",
+              "src": "930:72:12",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 4206,
+                        "name": "account",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 4200,
+                        "src": "952:7:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": null,
+                        "id": 4203,
+                        "name": "_Tracer",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 4143,
+                        "src": "940:7:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_struct$_Role_$3872_storage",
+                          "typeString": "struct Roles.Role storage ref"
+                        }
+                      },
+                      "id": 4205,
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "add",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 3888,
+                      "src": "940:11:12",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_nonpayable$_t_struct$_Role_$3872_storage_ptr_$_t_address_$returns$__$bound_to$_t_struct$_Role_$3872_storage_ptr_$",
+                        "typeString": "function (struct Roles.Role storage pointer,address)"
+                      }
+                    },
+                    "id": 4207,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "940:20:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 4208,
+                  "nodeType": "ExpressionStatement",
+                  "src": "940:20:12"
+                },
+                {
+                  "eventCall": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 4210,
+                        "name": "account",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 4200,
+                        "src": "987:7:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      ],
+                      "id": 4209,
+                      "name": "TracerAdded",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 4137,
+                      "src": "975:11:12",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_event_nonpayable$_t_address_$returns$__$",
+                        "typeString": "function (address)"
+                      }
+                    },
+                    "id": 4211,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "975:20:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 4212,
+                  "nodeType": "EmitStatement",
+                  "src": "970:25:12"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 4214,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "_addTracer",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 4201,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 4200,
+                  "name": "account",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4214,
+                  "src": "904:15:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 4199,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "904:7:12",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "903:17:12"
+            },
+            "returnParameters": {
+              "id": 4202,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "930:0:12"
+            },
+            "scope": 4231,
+            "src": "884:118:12",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 4229,
+              "nodeType": "Block",
+              "src": "1057:77:12",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 4222,
+                        "name": "account",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 4216,
+                        "src": "1082:7:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": null,
+                        "id": 4219,
+                        "name": "_Tracer",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 4143,
+                        "src": "1067:7:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_struct$_Role_$3872_storage",
+                          "typeString": "struct Roles.Role storage ref"
+                        }
+                      },
+                      "id": 4221,
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "remove",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 3912,
+                      "src": "1067:14:12",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_nonpayable$_t_struct$_Role_$3872_storage_ptr_$_t_address_$returns$__$bound_to$_t_struct$_Role_$3872_storage_ptr_$",
+                        "typeString": "function (struct Roles.Role storage pointer,address)"
+                      }
+                    },
+                    "id": 4223,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1067:23:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 4224,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1067:23:12"
+                },
+                {
+                  "eventCall": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 4226,
+                        "name": "account",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 4216,
+                        "src": "1119:7:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      ],
+                      "id": 4225,
+                      "name": "TracerRemoved",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 4141,
+                      "src": "1105:13:12",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_event_nonpayable$_t_address_$returns$__$",
+                        "typeString": "function (address)"
+                      }
+                    },
+                    "id": 4227,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1105:22:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 4228,
+                  "nodeType": "EmitStatement",
+                  "src": "1100:27:12"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 4230,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "_removeTracer",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 4217,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 4216,
+                  "name": "account",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4230,
+                  "src": "1031:15:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 4215,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1031:7:12",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1030:17:12"
+            },
+            "returnParameters": {
+              "id": 4218,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1057:0:12"
+            },
+            "scope": 4231,
+            "src": "1008:126:12",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "internal"
+          }
+        ],
+        "scope": 4232,
+        "src": "181:955:12"
+      }
+    ],
+    "src": "0:1136:12"
+  },
+  "legacyAST": {
+    "absolutePath": "/home/cesar/master/DappPrincipal/truffle/contracts/lib/TraceRole.sol",
+    "exportedSymbols": {
+      "TracerRole": [
+        4231
+      ]
+    },
+    "id": 4232,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 4126,
+        "literals": [
+          "solidity",
+          "^",
+          "0.5",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:23:12"
+      },
+      {
+        "absolutePath": "/home/cesar/master/DappPrincipal/truffle/contracts/lib/Context.sol",
+        "file": "./Context.sol",
+        "id": 4127,
+        "nodeType": "ImportDirective",
+        "scope": 4232,
+        "sourceUnit": 3510,
+        "src": "25:23:12",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "/home/cesar/master/DappPrincipal/truffle/contracts/lib/Roles.sol",
+        "file": "./Roles.sol",
+        "id": 4128,
+        "nodeType": "ImportDirective",
+        "scope": 4232,
+        "sourceUnit": 3938,
+        "src": "49:21:12",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "baseContracts": [
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 4129,
+              "name": "Context",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 3509,
+              "src": "204:7:12",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_Context_$3509",
+                "typeString": "contract Context"
+              }
+            },
+            "id": 4130,
+            "nodeType": "InheritanceSpecifier",
+            "src": "204:7:12"
+          }
+        ],
+        "contractDependencies": [
+          3509
+        ],
+        "contractKind": "contract",
+        "documentation": "@title TracerRole\n@dev Tracer are responsible for assigning and removing Whitelisted accounts.",
+        "fullyImplemented": true,
+        "id": 4231,
+        "linearizedBaseContracts": [
+          4231,
+          3509
+        ],
+        "name": "TracerRole",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "id": 4133,
+            "libraryName": {
+              "contractScope": null,
+              "id": 4131,
+              "name": "Roles",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 3937,
+              "src": "224:5:12",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_Roles_$3937",
+                "typeString": "library Roles"
+              }
+            },
+            "nodeType": "UsingForDirective",
+            "src": "218:27:12",
+            "typeName": {
+              "contractScope": null,
+              "id": 4132,
+              "name": "Roles.Role",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 3872,
+              "src": "234:10:12",
+              "typeDescriptions": {
+                "typeIdentifier": "t_struct$_Role_$3872_storage_ptr",
+                "typeString": "struct Roles.Role"
+              }
+            }
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 4137,
+            "name": "TracerAdded",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 4136,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 4135,
+                  "indexed": true,
+                  "name": "account",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4137,
+                  "src": "269:23:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 4134,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "269:7:12",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "268:25:12"
+            },
+            "src": "251:43:12"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 4141,
+            "name": "TracerRemoved",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 4140,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 4139,
+                  "indexed": true,
+                  "name": "account",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4141,
+                  "src": "319:23:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 4138,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "319:7:12",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "318:25:12"
+            },
+            "src": "299:45:12"
+          },
+          {
+            "constant": false,
+            "id": 4143,
+            "name": "_Tracer",
+            "nodeType": "VariableDeclaration",
+            "scope": 4231,
+            "src": "350:26:12",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_struct$_Role_$3872_storage",
+              "typeString": "struct Roles.Role"
+            },
+            "typeName": {
+              "contractScope": null,
+              "id": 4142,
+              "name": "Roles.Role",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 3872,
+              "src": "350:10:12",
+              "typeDescriptions": {
+                "typeIdentifier": "t_struct$_Role_$3872_storage_ptr",
+                "typeString": "struct Roles.Role"
+              }
+            },
+            "value": null,
+            "visibility": "private"
+          },
+          {
+            "body": {
+              "id": 4151,
+              "nodeType": "Block",
+              "src": "407:41:12",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "arguments": [],
+                        "expression": {
+                          "argumentTypes": [],
+                          "id": 4147,
+                          "name": "_msgSender",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 3497,
+                          "src": "428:10:12",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_function_internal_view$__$returns$_t_address_payable_$",
+                            "typeString": "function () view returns (address payable)"
+                          }
+                        },
+                        "id": 4148,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "kind": "functionCall",
+                        "lValueRequested": false,
+                        "names": [],
+                        "nodeType": "FunctionCall",
+                        "src": "428:12:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address_payable",
+                          "typeString": "address payable"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_address_payable",
+                          "typeString": "address payable"
+                        }
+                      ],
+                      "id": 4146,
+                      "name": "_addTracer",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 4214,
+                      "src": "417:10:12",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_nonpayable$_t_address_$returns$__$",
+                        "typeString": "function (address)"
+                      }
+                    },
+                    "id": 4149,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "417:24:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 4150,
+                  "nodeType": "ExpressionStatement",
+                  "src": "417:24:12"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 4152,
+            "implemented": true,
+            "kind": "constructor",
+            "modifiers": [],
+            "name": "",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 4144,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "395:2:12"
+            },
+            "returnParameters": {
+              "id": 4145,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "407:0:12"
+            },
+            "scope": 4231,
+            "src": "383:65:12",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 4163,
+              "nodeType": "Block",
+              "src": "476:111:12",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "arguments": [
+                          {
+                            "argumentTypes": null,
+                            "arguments": [],
+                            "expression": {
+                              "argumentTypes": [],
+                              "id": 4156,
+                              "name": "_msgSender",
+                              "nodeType": "Identifier",
+                              "overloadedDeclarations": [],
+                              "referencedDeclaration": 3497,
+                              "src": "503:10:12",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_address_payable_$",
+                                "typeString": "function () view returns (address payable)"
+                              }
+                            },
+                            "id": 4157,
+                            "isConstant": false,
+                            "isLValue": false,
+                            "isPure": false,
+                            "kind": "functionCall",
+                            "lValueRequested": false,
+                            "names": [],
+                            "nodeType": "FunctionCall",
+                            "src": "503:12:12",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_address_payable",
+                              "typeString": "address payable"
+                            }
+                          }
+                        ],
+                        "expression": {
+                          "argumentTypes": [
+                            {
+                              "typeIdentifier": "t_address_payable",
+                              "typeString": "address payable"
+                            }
+                          ],
+                          "id": 4155,
+                          "name": "isTracer",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 4177,
+                          "src": "494:8:12",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_function_internal_view$_t_address_$returns$_t_bool_$",
+                            "typeString": "function (address) view returns (bool)"
+                          }
+                        },
+                        "id": 4158,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "kind": "functionCall",
+                        "lValueRequested": false,
+                        "names": [],
+                        "nodeType": "FunctionCall",
+                        "src": "494:22:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "hexValue": "547261636572526f6c653a2063616c6c657220646f6573206e6f742068617665207468652054726163657220726f6c65",
+                        "id": 4159,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": true,
+                        "kind": "string",
+                        "lValueRequested": false,
+                        "nodeType": "Literal",
+                        "src": "518:50:12",
+                        "subdenomination": null,
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_stringliteral_b3cff1a44aec8349823aac92d0307532583ac2f7370f365f9a629203a9e22496",
+                          "typeString": "literal_string \"TracerRole: caller does not have the Tracer role\""
+                        },
+                        "value": "TracerRole: caller does not have the Tracer role"
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        },
+                        {
+                          "typeIdentifier": "t_stringliteral_b3cff1a44aec8349823aac92d0307532583ac2f7370f365f9a629203a9e22496",
+                          "typeString": "literal_string \"TracerRole: caller does not have the Tracer role\""
+                        }
+                      ],
+                      "id": 4154,
+                      "name": "require",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [
+                        10545,
+                        10546
+                      ],
+                      "referencedDeclaration": 10546,
+                      "src": "486:7:12",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
+                        "typeString": "function (bool,string memory) pure"
+                      }
+                    },
+                    "id": 4160,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "486:83:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 4161,
+                  "nodeType": "ExpressionStatement",
+                  "src": "486:83:12"
+                },
+                {
+                  "id": 4162,
+                  "nodeType": "PlaceholderStatement",
+                  "src": "579:1:12"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 4164,
+            "name": "onlyTracer",
+            "nodeType": "ModifierDefinition",
+            "parameters": {
+              "id": 4153,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "473:2:12"
+            },
+            "src": "454:133:12",
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 4176,
+              "nodeType": "Block",
+              "src": "655:44:12",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 4173,
+                        "name": "account",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 4166,
+                        "src": "684:7:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": null,
+                        "id": 4171,
+                        "name": "_Tracer",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 4143,
+                        "src": "672:7:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_struct$_Role_$3872_storage",
+                          "typeString": "struct Roles.Role storage ref"
+                        }
+                      },
+                      "id": 4172,
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "has",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 3936,
+                      "src": "672:11:12",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_view$_t_struct$_Role_$3872_storage_ptr_$_t_address_$returns$_t_bool_$bound_to$_t_struct$_Role_$3872_storage_ptr_$",
+                        "typeString": "function (struct Roles.Role storage pointer,address) view returns (bool)"
+                      }
+                    },
+                    "id": 4174,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "672:20:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "functionReturnParameters": 4170,
+                  "id": 4175,
+                  "nodeType": "Return",
+                  "src": "665:27:12"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 4177,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "isTracer",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 4167,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 4166,
+                  "name": "account",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4177,
+                  "src": "611:15:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 4165,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "611:7:12",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "610:17:12"
+            },
+            "returnParameters": {
+              "id": 4170,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 4169,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4177,
+                  "src": "649:4:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 4168,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "649:4:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "648:6:12"
+            },
+            "scope": 4231,
+            "src": "593:106:12",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 4188,
+              "nodeType": "Block",
+              "src": "759:36:12",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 4185,
+                        "name": "account",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 4179,
+                        "src": "780:7:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      ],
+                      "id": 4184,
+                      "name": "_addTracer",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 4214,
+                      "src": "769:10:12",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_nonpayable$_t_address_$returns$__$",
+                        "typeString": "function (address)"
+                      }
+                    },
+                    "id": 4186,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "769:19:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 4187,
+                  "nodeType": "ExpressionStatement",
+                  "src": "769:19:12"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 4189,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [
+              {
+                "arguments": null,
+                "id": 4182,
+                "modifierName": {
+                  "argumentTypes": null,
+                  "id": 4181,
+                  "name": "onlyTracer",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 4164,
+                  "src": "748:10:12",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_modifier$__$",
+                    "typeString": "modifier ()"
+                  }
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "748:10:12"
+              }
+            ],
+            "name": "addTracer",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 4180,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 4179,
+                  "name": "account",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4189,
+                  "src": "724:15:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 4178,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "724:7:12",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "723:17:12"
+            },
+            "returnParameters": {
+              "id": 4183,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "759:0:12"
+            },
+            "scope": 4231,
+            "src": "705:90:12",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 4197,
+              "nodeType": "Block",
+              "src": "834:44:12",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "arguments": [],
+                        "expression": {
+                          "argumentTypes": [],
+                          "id": 4193,
+                          "name": "_msgSender",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 3497,
+                          "src": "858:10:12",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_function_internal_view$__$returns$_t_address_payable_$",
+                            "typeString": "function () view returns (address payable)"
+                          }
+                        },
+                        "id": 4194,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "kind": "functionCall",
+                        "lValueRequested": false,
+                        "names": [],
+                        "nodeType": "FunctionCall",
+                        "src": "858:12:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address_payable",
+                          "typeString": "address payable"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_address_payable",
+                          "typeString": "address payable"
+                        }
+                      ],
+                      "id": 4192,
+                      "name": "_removeTracer",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 4230,
+                      "src": "844:13:12",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_nonpayable$_t_address_$returns$__$",
+                        "typeString": "function (address)"
+                      }
+                    },
+                    "id": 4195,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "844:27:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 4196,
+                  "nodeType": "ExpressionStatement",
+                  "src": "844:27:12"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 4198,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "renounceTracer",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 4190,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "824:2:12"
+            },
+            "returnParameters": {
+              "id": 4191,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "834:0:12"
+            },
+            "scope": 4231,
+            "src": "801:77:12",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 4213,
+              "nodeType": "Block",
+              "src": "930:72:12",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 4206,
+                        "name": "account",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 4200,
+                        "src": "952:7:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": null,
+                        "id": 4203,
+                        "name": "_Tracer",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 4143,
+                        "src": "940:7:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_struct$_Role_$3872_storage",
+                          "typeString": "struct Roles.Role storage ref"
+                        }
+                      },
+                      "id": 4205,
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "add",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 3888,
+                      "src": "940:11:12",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_nonpayable$_t_struct$_Role_$3872_storage_ptr_$_t_address_$returns$__$bound_to$_t_struct$_Role_$3872_storage_ptr_$",
+                        "typeString": "function (struct Roles.Role storage pointer,address)"
+                      }
+                    },
+                    "id": 4207,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "940:20:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 4208,
+                  "nodeType": "ExpressionStatement",
+                  "src": "940:20:12"
+                },
+                {
+                  "eventCall": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 4210,
+                        "name": "account",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 4200,
+                        "src": "987:7:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      ],
+                      "id": 4209,
+                      "name": "TracerAdded",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 4137,
+                      "src": "975:11:12",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_event_nonpayable$_t_address_$returns$__$",
+                        "typeString": "function (address)"
+                      }
+                    },
+                    "id": 4211,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "975:20:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 4212,
+                  "nodeType": "EmitStatement",
+                  "src": "970:25:12"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 4214,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "_addTracer",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 4201,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 4200,
+                  "name": "account",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4214,
+                  "src": "904:15:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 4199,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "904:7:12",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "903:17:12"
+            },
+            "returnParameters": {
+              "id": 4202,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "930:0:12"
+            },
+            "scope": 4231,
+            "src": "884:118:12",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 4229,
+              "nodeType": "Block",
+              "src": "1057:77:12",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 4222,
+                        "name": "account",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 4216,
+                        "src": "1082:7:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": null,
+                        "id": 4219,
+                        "name": "_Tracer",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 4143,
+                        "src": "1067:7:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_struct$_Role_$3872_storage",
+                          "typeString": "struct Roles.Role storage ref"
+                        }
+                      },
+                      "id": 4221,
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "remove",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 3912,
+                      "src": "1067:14:12",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_nonpayable$_t_struct$_Role_$3872_storage_ptr_$_t_address_$returns$__$bound_to$_t_struct$_Role_$3872_storage_ptr_$",
+                        "typeString": "function (struct Roles.Role storage pointer,address)"
+                      }
+                    },
+                    "id": 4223,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1067:23:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 4224,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1067:23:12"
+                },
+                {
+                  "eventCall": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 4226,
+                        "name": "account",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 4216,
+                        "src": "1119:7:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      ],
+                      "id": 4225,
+                      "name": "TracerRemoved",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 4141,
+                      "src": "1105:13:12",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_event_nonpayable$_t_address_$returns$__$",
+                        "typeString": "function (address)"
+                      }
+                    },
+                    "id": 4227,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1105:22:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 4228,
+                  "nodeType": "EmitStatement",
+                  "src": "1100:27:12"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 4230,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "_removeTracer",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 4217,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 4216,
+                  "name": "account",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4230,
+                  "src": "1031:15:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 4215,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1031:7:12",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1030:17:12"
+            },
+            "returnParameters": {
+              "id": 4218,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1057:0:12"
+            },
+            "scope": 4231,
+            "src": "1008:126:12",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "internal"
+          }
+        ],
+        "scope": 4232,
+        "src": "181:955:12"
+      }
+    ],
+    "src": "0:1136:12"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.5.1+commit.c8a2cb62.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.0.19",
+  "updatedAt": "2020-01-13T18:39:33.357Z",
+  "devdoc": {
+    "details": "Tracer are responsible for assigning and removing Whitelisted accounts.",
+    "methods": {},
+    "title": "TracerRole"
+  },
+  "userdoc": {
+    "methods": {}
+  }
+}
