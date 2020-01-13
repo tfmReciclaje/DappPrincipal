@@ -125,7 +125,9 @@ export class AssociatedService {
           console.log("container_address: " + container_address)
           this.contractAssociated.methods.listContainers(container_address).call().then((container) => {
             console.log("Container: " + JSON.stringify(container));            
-            container.container_address = container_address;
+            container.container_address = container_address;  
+            container.startDate = new Date(container.startDate * 1000);
+            container.stateDate = new Date(container.stateDate * 1000);
             this.containerTable.push(container);
           })
         })
