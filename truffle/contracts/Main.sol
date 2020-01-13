@@ -47,7 +47,12 @@ contract Main is Pausable, TracerRole {
     //------------------    ASSOCIATED    ----------------------------------------------------------------
     //----------------------------------------------------------------------------------------------------
 
-	// Solo una cuenta con permisos de Administrador podrá añadir asociados al contrato.
+
+	/**
+     * @dev Añadir un Asociado al contrato Principal.
+     * @param hashName  Cantidad Puntos Generados
+     * @param _associated_address  Cantidad Puntos Canjeados
+     **/
     function addAssociated(bytes32 hashName, address _associated_address) public onlyAdmin whenNotPaused  {
 
         bytes32 hashAssociatedName = hashName;
@@ -67,22 +72,42 @@ contract Main is Pausable, TracerRole {
 
 	}
 
-	// Método para recuperar la lista de asociados por código hash
+
+	/**
+    * @dev Devuelve la lista de asociados por código hash
+	* @return ArrayList
+	*/
     function getAssociatedList() public view returns (bytes32[] memory) {
 		return associatedList;
 	}
 
-	// Recupera el asociado con código hashName
+	
+	/**
+    * @dev Devuelve el asociado con código hashName
+	* @param hashName  Hash de Nombre de Asociado
+	* @return contract_address   Address del contrato de Asociado
+	* @return enable  Booleano
+	*/
     function getAssociated(bytes32 hashName ) public view returns (address contract_address, bool enable) {
         return (_associated[hashName].contract_address, _associated[hashName].enable);
     }
 
-	// Método para comprobar si la dirección que se pasa como parámetro corresponde a la dirección de contrato de un asociado.
+	/**
+    * @dev comprobar si la dirección que se pasa como parámetro corresponde a la dirección de contrato de un asociado.
+	* @param hashName  Hash del nombre de Asociado
+	* @param associated_contract_address Address del contrato de Asociado
+	* @return enable  Booleano
+	*/
 	function isAssociated(bytes32 hashName, address associated_contract_address) public view returns (bool) {
 		return  _associated[hashName].contract_address == associated_contract_address;
 	}
 
-	// Método para desactivar un asociado con identificador hashName. Solo una cuenta con permisos de Admin pará ejecutar el método
+
+	/**
+    * @dev Función para desactivar un asociado con identificador hashName. Solo una cuenta con permisos de Admin puede ejecutarlo
+	* @param hashName  Hash de Nombre de Asociado
+	* @return boolean  Ejecución ok/nok
+	*/
 	function disableAssociated(bytes32 hashName) public onlyAdmin whenNotPaused returns (bool) {
 
 		require(_associated[hashName].enable, "Associated is already disabled.");
@@ -96,7 +121,12 @@ contract Main is Pausable, TracerRole {
 		return true;
 	 }
 
-	// Método para activar un asociado con identificador hashName. Solo una cuenta con permisos de Admin pará ejecutar el método
+
+	/**
+    * @dev Función para activar un asociado con identificador hashName. Solo una cuenta con permisos de Admin puede ejecutar
+	* @param hashName  Hash de Nombre de Asociado
+	* @return boolean  Ejecución ok/nok
+	*/
 	function enableAssociated(bytes32 hashName) public onlyAdmin whenNotPaused returns (bool) {
 
 		require(!_associated[hashName].enable, "Associated is already enabled.");
@@ -109,14 +139,18 @@ contract Main is Pausable, TracerRole {
 
 		return true;
 	}
-	//----------------------------------------------------------------------------------------------------
-
-
 
 	//----------------------------------------------------------------------------------------------------
-    //------------------    USERS    ---------------------------------------------------------------------
+	//----------------------------------------------------------------------------------------------------
+    //--------------------------------------    USERS    -------------------------------------------------
     //----------------------------------------------------------------------------------------------------
-    // Método para añadir un usuario. Se guarda un hashSecret como código hash256 de la palabra secreta incluida por el usuario
+ 
+	/**
+    * @dev Añade un usuario y guarda un hashSecret como código hash256 de la palabra secreta incluida por el usuario.
+	* @param hashName  Hash de Nombre de Usuario
+	* @param hashedSecret  Hash de palabra clave del Usuario
+	* @return boolean  Ejecución ok/nok
+	*/
 	function addUser(bytes32 hashName, bytes32 hashedSecret) internal whenNotPaused returns (bool){
 
 		User storage user = _users[hashName];
@@ -135,17 +169,35 @@ contract Main is Pausable, TracerRole {
 		}
 	}
 
-	// Método para comproabr si existe el usuario con identificador hashName
+	
+	/**
+    * @dev Comprueba si existe el usuario con identificador hashName.
+	* @param hashName  Hash de Nombre de Usuario
+	* @return boolean  Ejecución ok/nok
+	*/
 	function isUser(bytes32 hashName) internal view returns (bool) {
 		return _users[hashName].index > 0;
 	}
 
-	// Devuelve el balance del usuario con identificador hashName
+	
+	/**
+    * @dev Devuelve el balance del usuario con identificador hashName.
+	* @param hashName  Hash de Nombre de Usuario
+	* @return balance
+	*/
 	function balanceOf(bytes32 hashName) public view returns (uint256) {
          return _users[hashName].balance;
     }	
 
-    // Método que actualiza el balance de puntos de un usuario. El método solo podrá invocarse desde el contrato de un asociado.
+
+	/**
+    * @dev Actualiza el balance del usuario. Sólo puede llamarse desde el contrato del Asociado
+	* @param hashAssociatedName  Hash del nombre del Asociado
+	* @param hashName  Hash de Nombre de Usuario
+	* @param generatedPoints  Puntos
+	* @param hashedSecret  Hash clave del Usuario
+	* @return bool
+	*/
 	function updateUserBalance(bytes32 hashAssociatedName, bytes32 hashName, uint generatedPoints, bytes32 hashedSecret)
 	public whenNotPaused returns (bool){
 
@@ -170,13 +222,25 @@ contract Main is Pausable, TracerRole {
     //------------------    EXCHANGE   -------------------------------------------------------------------
     //----------------------------------------------------------------------------------------------------
 
-	// Se recupera los puntos correspondientes a los envases pack_1, pack_2 y pack_3. El método se invoca cada vez que un usuario añade envases en el contenedor.
-	// Este método es invocado desde el contrato del asociado para llevar la gestión de los puntos generados en el mismo
+
+	/**
+    * @dev Se recuperan los puntos correspondientes para pack_1, pack_2 y pack_3
+	* @param _pack1  Elementos de Tipo 1
+	* @param _pack2  Elementos de Tipo 2
+	* @param _pack3  Elementos de Tipo 3
+	* @return Puntos
+	*/
 	function calculatePoints(uint _pack1, uint _pack2, uint _pack3) public view returns (uint) {
 		return customOracle.calculatePoints(_pack1, _pack2, _pack3);
 	}
 
-	// Se comprueba que el usuario con el código hashSecret está dado de alta en el contrato
+	
+	/**
+    * @dev Se comprueba que el usuario con el código hashSecret está dado de alta en el contrato
+	* @param user_hashName  Hash del nombre de Usuario
+	* @param hashedSecret  Hash de la palabra Clave
+	* @return Booleano
+	*/
     function checkUser(bytes32 user_hashName, bytes32 hashedSecret) internal view returns (bool){
 
         require(isUser(user_hashName), "User doesn't exist");
@@ -186,7 +250,15 @@ contract Main is Pausable, TracerRole {
         return false;
     }
 
-    //Solo el contrato del asociado puede llamar al método exchange
+    
+	/**
+    * @dev Canjear Puntos. Sólo el contrato del asociado puede llamar al método exchange
+	* @param hashAssociatedName  Hash del nombre de Asociado
+	* @param user_hashName  Hash del nombre del Usuario
+	* @param amount  Cantidad de Puntos para canjear
+	* @param hashedSecret  Hash de la palabra Clave
+	* @return Booleano
+	*/
     function exchangePoints(bytes32 hashAssociatedName, bytes32 user_hashName, uint amount, bytes32 hashedSecret) public whenNotPaused returns (bool){
 
         require(isAssociated(hashAssociatedName, msg.sender), "Associated doesn't exist."); //Solo pude llamarlo la Dirección de Asociado.
@@ -225,27 +297,25 @@ contract Main is Pausable, TracerRole {
 
     }
 
-	//Solo el contrato del asociado puede llamar al método addRecicledBag, habria que meter modificador onlyAdmin
-	/* 
-      * @dev recycledBagQR : Desde el asociado se le pasa la info al Principal para que inicialize el estado
-      * contrato Pricipal le asigna inicialemnet estado "STORED" 
+	
+	/** 
+      * @dev Añade una bolsa llena de Residuos e inicializa el Primer Estado.
       * @param _hashAssociatedName Hash del asociado
       * @param _QR Identificador que se le asigna a la bolsa
 	  * @param _associated Address del container
-	  * @param _nameRef Address del container
-	  * @param _item_1 Item 1
-	  * @param _item_2 Item 2
-	  * @param _item_3 Item 3
-      * 
+	  * @param _nameRef Nombre del container
+	  * @param _pack1  Elementos de Tipo 1
+      * @param _pack2  Elementos de Tipo 2 
+      * @param _pack3  Elementos de Tipo 3
       */ 
-    function addRecicledBag(bytes32 _hashAssociatedName, bytes32 _QR, address _associated, bytes32 _nameRef,  uint _item_1, uint _item_2, uint _item_3 ) public whenNotPaused returns (bool){
+    function addRecicledBag(bytes32 _hashAssociatedName, bytes32 _QR, address _associated, bytes32 _nameRef,  uint _pack1, uint _pack2, uint _pack3 ) public whenNotPaused returns (bool){
         
 		require(!(listQR_Bags[_QR].qr != ""), "QR ya utilizado!!");
 
 		string memory _status = "STORED" ;//Estado inicial de la Bolsa, 
 
 		//Añadir Bolsa al mapping
-        listQR_Bags[_QR] = QR_Bag(_QR, _associated, _hashAssociatedName, _nameRef,  _item_1, _item_2, _item_3, _status, now);
+        listQR_Bags[_QR] = QR_Bag(_QR, _associated, _hashAssociatedName, _nameRef,  _pack1, _pack2, _pack3, _status, now);
 		_QRBagList.push(_QR);
 
 		return true;
@@ -254,16 +324,19 @@ contract Main is Pausable, TracerRole {
     }
 
 
-	 /* 
-      * @dev getQRBagList :Devuelve la lista de bolsas QR para poder usar luego el mapping listQR_Bags y poder monitorizarlas
+	 /** 
+      * @dev Devuelve la lista de bolsas QR para poder usar luego el mapping listQR_Bags y poder monitorizarlas
       * @return bytes32[] Array de QRs
-      * 
       */ 
      function getQRBagList() public view returns (bytes32[] memory) {
 		return _QRBagList;
 	}
 
- 	// Cambiar el estado de la bolsa TRansportistas
+ 	
+	 /** 
+      * @dev Cambiar el estado de la bolsa por los Transportistas.
+      * @param _QR Identificador de la bolsa.
+      */ 
      function updatedQRBagTruck(bytes32 _QR) public onlyTracer   { //Solo puede llamarle las compañias de Basura
         require(listQR_Bags[_QR].qr != "", "QR erroneo!!");
 
@@ -272,7 +345,11 @@ contract Main is Pausable, TracerRole {
 	}
 
 
-	// Cambiar el estado de la bolsa Fabricas Reciclado
+	 
+	/** 
+      * @dev Cambiar el estado de la bolsa por Fabricas de Reciclado.
+      * @param _QR Identificador de la bolsa.
+      */ 
      function updatedQRBagFacfory(bytes32 _QR) public onlyTracer   { //Solo puede llamarle las fabricas de reciclaje
         require(listQR_Bags[_QR].qr != "", "QR erroneo!!");
 
