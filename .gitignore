@@ -1,0 +1,19 @@
+# compiled output
+/angular/dist
+/angular/tmp
+/angular/out-tsc
+# Only exists if Bazel was run
+/angular/bazel-out
+
+# dependencies
+/angular/node_modules
+
+/angular/.vscode/*
+!/angular/.vscode/settings.json
+!/angular/.vscode/tasks.json
+!/angular/.vscode/launch.json
+!/angular/.vscode/extensions.json
+/angular/.history/*
+
+
+/truffle/node_modules
