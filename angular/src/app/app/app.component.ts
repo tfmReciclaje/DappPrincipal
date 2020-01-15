@@ -7,6 +7,8 @@ import { Web3Service } from '../services/web3.service';
 import { MainService } from '../services/main.service';
 import { AssociatedService } from '../services/associated.service';
 import { MessageComponent } from '../common/message/message.component';
+import { AddressComponent } from '../address/address.component';
+
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
@@ -162,6 +164,15 @@ export class AppComponent implements OnInit {
       )
     }
   }
+
+  address(){    
+    const modalRef = this.modalService.open(AddressComponent,{ size: 'lg', backdrop: 'static'});
+    modalRef.result.then((result) => { 
+      if (result == 'OK'){               
+      }
+    }).catch((error) =>{      
+    }); 
+  }  
 
   setStatus(status) {
     this.matSnackBar.open(status, null, {duration: 3000});

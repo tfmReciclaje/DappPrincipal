@@ -40,9 +40,7 @@ describe('AssociatedService', () => {
                      
           mainService.getAssociatedList().then((result) => {
           if (result.length == 0){
-
-            console.log("beforeEach._________________________________getAssociatedList: " + result.length)
-            
+                        
             web3Service.default_account.account = account_admin;
             mainService.AddAssociated(associatedName,associated_address).then(
               result => {

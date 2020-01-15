@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app/app.component';
+import { AddressComponent } from './address/address.component';
 
 import { MainModule } from './main/main.module';
 import { AssociatedModule } from './associated/associated.module';
@@ -23,7 +24,8 @@ import {
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    AddressComponent
   ],
   imports: [
     BrowserModule,
@@ -41,6 +43,9 @@ import {
     ReactiveFormsModule,
     UtilModule,
     PrCommonModule    
+  ], 
+  entryComponents: [    
+    AddressComponent    
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
   providers: [],

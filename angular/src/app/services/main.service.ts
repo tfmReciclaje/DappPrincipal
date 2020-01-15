@@ -42,8 +42,6 @@ export class MainService {
   public totalPack2: number = 0;
   public totalPack3: number = 0;  
   public totalItems: number = 0;
-
-  
   
   contractMain: any;
 
@@ -64,13 +62,16 @@ export class MainService {
     }    
   }
 
-  public getContractAddress(){
-    if (this.web3Service.provider == "URL"){
-      return main_truffle_contract.networks[this.web3Service.networkId].address;
-    }
-    if (this.web3Service.provider == "Metamask"){
-      return main_truffle_contract.networks[this.web3Service.networkId].address;
-    }
+  public getContractAddress(){    
+      return main_truffle_contract.networks[this.web3Service.networkId].address;    
+  } 
+
+  public updateContractAddress(address: any){    
+    if (address){
+      alert(1)
+      main_truffle_contract.networks[this.web3Service.networkId].address = address;
+      this.init();
+    }    
   } 
 
   public async getAssociatedList() {

@@ -34,6 +34,7 @@ export class AssociatedService {
 
   eventGenerate: any;
 
+
   constructor(private web3Service: Web3Service) {        
   }
 
@@ -52,27 +53,9 @@ export class AssociatedService {
     }    
   }
 
-  /*
-
-  public getHashAssociatedName(){
-    if (this.contractAssociated){    
-      console.log('Sending getAssociatedList call... (please wait)');
-      try {
-        this.contractAssociated.methods.getHashAssociatedName().call().then((hashAssociatedName) => {          
-          this.hashAssociatedName = hashAssociatedName;        
-          console.log("hashAssociatedName: " + JSON.stringify(hashAssociatedName));
-        });            
-
-      } catch (e) {
-        console.log(e);      
-      }
-    }    
-  }
-  */
-
   public async getAssociatedInfo(){
     if (this.contractAssociated){      
-      console.log('Sending getAssociatedList call... (please wait)');
+      console.log('Sending getAssociatedInfo call... (please wait)');
       try {
         return this.contractAssociated.methods.getAssociatedInfo().call().then((associatedInfo) => {          
           this.associatedInfo = associatedInfo;        
@@ -100,7 +83,7 @@ export class AssociatedService {
 
     if (this.contractAssociated){
       this.containerList = new Array<any>();
-      console.log('Sending getAssociatedList call... (please wait)');
+      console.log('Sending getContainerList call... (please wait)');
       try {
         this.containerList = await this.contractAssociated.methods.getContainerList().call().then(function(receipt){
           console.log("containerList: " + receipt)          
