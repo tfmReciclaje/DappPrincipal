@@ -281,17 +281,26 @@ contract Main is Pausable, TracerRole {
     mapping (bytes32 => QR_Bag) public listQR_Bags; //*  Lista de BOlsas con QRs en la Aplicación
     bytes32[] public _QRBagList;
 
-	 //Modelo de Datos de una bolsa del Contenedor identificada con un QR que tendrá el usuario que recicle
+	//Estados de las bolsas
+	enum StatusBag{
+        STORED,         // Residuo Almacenado en la bolsa
+        IN_TRUCK,       // Residuo recogido por Equipo de Limpieza
+        RECYCLED		// Residuo Reciclado
+    }
+
+
+
+	 //Modelo de Datos de una bolsa del Contenedor Reciclada
     struct QR_Bag{
         bytes32 qr;
         address associated;
         bytes32 hashAssociatedName;
-        bytes32 nameRef;//
+        bytes32 nameRef;
         uint item_1;
         uint item_2;
         uint item_3;
-        string status; //String o enum
-        uint date;//no haria falta
+        StatusBag status; 
+        uint date;
 
 
     }
@@ -311,10 +320,8 @@ contract Main is Pausable, TracerRole {
         
 		require(!(listQR_Bags[_QR].qr != ""), "QR ya utilizado!!");
 
-		string memory _status = "STORED" ;//Estado inicial de la Bolsa, 
-
 		//Añadir Bolsa al mapping
-        listQR_Bags[_QR] = QR_Bag(_QR, _associated, _hashAssociatedName, _nameRef,  _pack1, _pack2, _pack3, _status, now);
+        listQR_Bags[_QR] = QR_Bag(_QR, _associated, _hashAssociatedName, _nameRef,  _pack1, _pack2, _pack3, StatusBag.STORED, now);
 		_QRBagList.push(_QR);
 
 		return true;
@@ -340,7 +347,7 @@ contract Main is Pausable, TracerRole {
         require(listQR_Bags[_QR].qr != "", "QR erroneo!!");
 
         listQR_Bags[_QR].date = now;
-		listQR_Bags[_QR].status = "IN_TRUCK";
+		listQR_Bags[_QR].status = StatusBag.IN_TRUCK;
 	}
 
 
@@ -353,7 +360,7 @@ contract Main is Pausable, TracerRole {
         require(listQR_Bags[_QR].qr != "", "QR erroneo!!");
 
         listQR_Bags[_QR].date = now;
-		listQR_Bags[_QR].status = "RECYCLED";
+		listQR_Bags[_QR].status = StatusBag.RECYCLED;
 	}
 
 }
