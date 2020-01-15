@@ -2,83 +2,51 @@ pragma solidity >= 0.5.0 < 0.6.0;
 
 import "./lib/provableAPI_0.5.sol";
 import "./lib/SafeMath.sol";
-//import "./lib/AdminRole.sol";
 import "./lib/Pausable.sol";
 
-
+/**
+ * 	@dev CustomOracle
+ *
+ **/
 contract CustomOracle is usingProvable, Pausable {
 
     using SafeMath for uint;
 
-    // ** Constantes **
-	uint constant private MAX_VALUE_LIMIT = 1000;
+	/**
+     *  Constantes inicialización
+     **/
+	uint constant private BLOCKS_PERIOD = 40000;
+	uint constant private BLOCKS_REQUEST_ALLOW = 6000;
 	uint constant private GAS_LIMIT_LOW = 150000;
 	uint constant private GAS_LIMIT_MED = 200000;
 	uint constant private GAS_LIMIT_HIGH = 380000;
-	uint constant private BLOCKS_PERIOD = 40000;
-	uint constant private BLOCKS_REQUEST_ALLOW = 6000;
-	//
-	uint constant private DECIMAL_POS = 4;
+
+	/**
+	 *  Constantes
+     **/
+	uint constant private MAX_VALUE_LIMIT = 1000;
 	uint constant private DEC_POS_DIV = 10000;
+	uint constant private DECIMAL_POS = 4;
 	uint constant private ONE_CENT = 100;
 	uint constant private PACKAGING_ITEMS = 3;
 	uint constant private PACK1 = 0;
 	uint constant private PACK2 = 1;
 	uint constant private PACK3 = 2;
 
-   // TEST
-    uint256 public randomNumber;
-    uint public rateETHEUR;
-    uint public rateUSDEUR;
-    uint public aluminumPrice;
-    uint public oilPrice;
-    uint public petPrice;
-    string public dateTime;
+	/**
+     *  Variables control de frecuencia
+     **/
+    uint private lastReqRANDOM;
+    uint private lastReqOIL;
+    uint private lastReqPET;
+    uint private lastReqALUMINUM;
+    uint private lastReqETHEUR;
+    uint private lastReqUSDEUR;
+    uint private lastReqDATE;
 
-    uint private lastReqRANDOM = 0;
-    uint private lastReqOIL = 0;
-    uint private lastReqPET = 0;
-    uint private lastReqALUMINUM = 0;
-    uint private lastReqETHEUR = 0;
-    uint private lastReqUSDEUR = 0;
-    uint private lastReqDATE = 0;
-
-    // ** Tipos posibles de queries enviadas por el oráculo **
-    enum QueryType{
-        RANDOM,         // Número aleatorio
-        OIL,            // Precio petróleo
-        PET,            // Precio plástico PET
-        ALUMINUM,       // Precio aluminio
-        ETHEUR,         // Tipo de cambio Ether - Euro
-        USDEUR,         // Tipo de cambio US Dólar - Euro
-        DATE            // Fecha y hora actual
-    }
-
-    // ** Datos queries en progreso
-    struct queryData {
-        bool inProgress;
-        QueryType qType;
-    }
-
-    // ** Contador de queries en progreso (enviadas al oráculo y pendiente de recibir respuesta)
-    // ** Sirve para controlar si hay queries que se estén quedando sin respuesta
-    uint public countQueryInProgress;
-
-    // ** Mapping para el control de queries en progreso
-    mapping (bytes32 => queryData) private queryInProgress;
-
-    // ** Struct con campos asociados a los puntos dados por envase
-    struct PointsPerPackaging {
-        uint pointsPerPack;
-        uint pointsMin;
-        uint pointsMax;
-        uint priceMin;
-        uint priceMax;
-    }
-
-    // ** Array con información campos asociados a los puntos dados por envase
-    PointsPerPackaging[PACKAGING_ITEMS] public packaging;
-
+	/**
+	 *  Variables públicas
+     **/
     uint public priceEthMin;
     uint public priceEthMax;
     uint public rangeEthPrice;
@@ -90,9 +58,63 @@ contract CustomOracle is usingProvable, Pausable {
     uint public blocksPeriod;
     uint public blocksRequest;
 
-    address payable public owner;
+    uint public randomNumber;
+    uint public rateETHEUR;
+    uint public aluminumPrice;
+    uint public petPrice;
+    string public dateTime;
 
-    // ** Eventos
+    address payable public owner;    
+
+	/**
+     *  Tipos posibles de queries enviadas por el oráculo
+     **/
+    enum QueryType{
+        RANDOM,         // Número aleatorio
+        PET,            // Precio plástico PET
+        ALUMINUM,       // Precio aluminio
+        ETHEUR,         // Tipo de cambio Ether - Euro
+        DATE            // Fecha y hora actual
+    }
+
+	/**
+     *  Struct con campos asociados a los puntos dados por envase
+     **/
+    struct PointsPerPackaging {
+        uint pointsPerPack;
+        uint pointsMin;
+        uint pointsMax;
+        uint priceMin;
+        uint priceMax;
+    }
+
+	/**
+     *  Datos queries en progreso
+    **/
+    struct queryData {
+        bool inProgress;
+        QueryType qType;
+    }
+
+	/**
+     *  Mapping para el control de queries en progreso
+     **/
+    mapping (bytes32 => queryData) private queryInProgress;
+
+	/**
+     *  Contador de queries en progreso (enviadas al oráculo y pendiente de recibir respuesta)
+     *  Sirve para controlar si hay queries que se estén quedando sin respuesta
+     **/
+    uint public countQueryInProgress;    
+
+    /**
+     * Array con información campos asociados a los puntos dados por envase
+     **/
+    PointsPerPackaging[PACKAGING_ITEMS] public packaging;
+
+    /**
+     *    Eventos
+     **/
     event LogNewProvableQuery(address indexed myAddress, string description);
     event generateNewValue(address indexed myAddress, string description, string value);
     event generatedRandomNumber(address indexed myAddress, uint256 randomNumber);
@@ -108,25 +130,28 @@ contract CustomOracle is usingProvable, Pausable {
 
     /**
      * @dev Valida la frecuencia de una petición al oráculo
+     *
+     * @param _lastRequest Número de bloques en la última petición
      **/
     modifier checkLastRequest(uint _lastRequest) {
-        require(_lastRequest + blocksRequest < block.number, "Request not allowed. Too frequent");        
+        require(_lastRequest + blocksRequest < block.number, "Request not allowed. Too frequent");
         _;
     }
 
     /**
      * @dev Constructor
+     *      Iniciailiza los parámetros con los valores por defecto
      **/
     constructor()
         payable
         public
     {
-        owner = msg.sender;
+        blocksPeriod = BLOCKS_PERIOD;
+        blocksRequest = BLOCKS_REQUEST_ALLOW;
         gasLimitLow = GAS_LIMIT_LOW;
         gasLimitMed = GAS_LIMIT_MED;
         gasLimitHigh = GAS_LIMIT_HIGH;
-        blocksPeriod = BLOCKS_PERIOD;
-        blocksRequest = BLOCKS_REQUEST_ALLOW;
+        owner = msg.sender;
 
         initializePointsArray();
     }
@@ -138,7 +163,6 @@ contract CustomOracle is usingProvable, Pausable {
      * @param _pack2Qty     Cantidad envases pack2
      * @param _pack3Qty     Cantidad envases pack3
      * @return _totalPoints Total de puntos
-     *
      **/
     function calculatePoints(uint _pack1Qty, uint _pack2Qty, uint _pack3Qty)
         public
@@ -266,7 +290,6 @@ contract CustomOracle is usingProvable, Pausable {
         } else {
             blocksPeriod = _blocksPeriod;
         }
-
         emit blockPeriodUpdate(address(this), blocksPeriod);
     }
 
@@ -278,13 +301,11 @@ contract CustomOracle is usingProvable, Pausable {
     function setBlocksRequest(uint _blocksRequest)
         internal
     {
-
         if (_blocksRequest == 0) {
             blocksRequest = BLOCKS_REQUEST_ALLOW;
         } else {
             blocksRequest = _blocksRequest;
         }
-
         emit blockRequestUpdate(address(this), blocksRequest);
     }
 
@@ -402,20 +423,37 @@ contract CustomOracle is usingProvable, Pausable {
     }
 
     /**
-     * @dev Comprueba mediante el número del bloque si se deben actualizar los precios utilizados como referencia
-     *      para el cálculo de puntos entregados por envase
+     * @dev Comprueba mediante el número del bloque si se deben actualizar los precios
+     *      utilizados como referencia para el cálculo de puntos entregados por envase
+     *
+     * @return indicador de actualización
      **/
+	function checkNextProcess()
+        public
+        view
+        returns(bool)
+    {
+        if (block.number > prevBlock + blocksPeriod && !paused()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
-	function checkNextProcess() 
+    /**
+     * @dev Recupera los valores necesarios para actualizar los puntos entregados por envase
+     **/
+	function nextProcess()
 	    public
+	    whenNotPaused
 	{
-		if (prevBlock + blocksPeriod < block.number) {
+		if (checkNextProcess()) {
 
-		 	prevBlock = block.number;
+			prevBlock = block.number;
 
-		 	newEthEurRateRequest(1);
-		 	newPetPriceRequest();
-		 	newAluminumPriceRequest();
+			newEthEurRateRequest(1);
+			newPetPriceRequest();
+			newAluminumPriceRequest();
 		}
 	}
 
@@ -436,11 +474,6 @@ contract CustomOracle is usingProvable, Pausable {
             randomNumber = parseInt(_result);
             emit generatedRandomNumber(address(this), randomNumber);
 
-        } else if (queryInProgress[_queryId].qType == QueryType.OIL) {
-
-            oilPrice = parseInt(_result, DECIMAL_POS);
-            emit generateNewValue(address(this), "OIL", _result);
-
         } else if (queryInProgress[_queryId].qType == QueryType.PET) {
 
             petPrice = parseInt(_result, DECIMAL_POS);
@@ -455,11 +488,6 @@ contract CustomOracle is usingProvable, Pausable {
 
             rateETHEUR = parseInt(_result, DECIMAL_POS);
             emit generateNewValue(address(this), "ETHEUR", _result);
-
-        } else if (queryInProgress[_queryId].qType == QueryType.USDEUR) {
-
-            rateUSDEUR = parseInt(_result, DECIMAL_POS);
-            emit generateNewValue(address(this), "USDEUR", _result);
 
         } else if (queryInProgress[_queryId].qType == QueryType.DATE) {
 
@@ -591,13 +619,15 @@ contract CustomOracle is usingProvable, Pausable {
      */
     function newRandomRequest(uint _min, uint _max)
         public
+        payable
         onlyAdmin
+        whenNotPaused
         checkLastRequest(lastReqRANDOM)
     {
         require(_max > _min, "Max value is not greater than Min value");
 
         string memory query = string(abi.encodePacked("https://www.random.org/integers/?num=1&min=", uint2str(_min), "&max=", uint2str(_max), "&col=1&base=10&format=plain&rnd=new"));
-        queryURLRequest(query, QueryType.RANDOM, gasLimitMed);
+        queryURLRequestPayable(query, QueryType.RANDOM, gasLimitMed);
         lastReqRANDOM = block.number;
     }
 
@@ -621,25 +651,8 @@ contract CustomOracle is usingProvable, Pausable {
     }
 
     /**
-     * @dev Prepara query para convertir un importe en US Dolars a Euros
-     *
-     * @param _amount Importe a convertir (1 para obtener tipo de cambio)
+     * @dev Prepara query para obtener el precio del plástico PET
      **/
-    function newUsdEurRateRequest(uint _amount)
-        public
-        onlyAdmin
-        checkLastRequest(lastReqUSDEUR)
-    {
-        require(_amount > 0, "Amount is not greater than zero");
-
-        // ** Se construye la query con el importe (_amount) enviado como parámetro
-        // ** La apiKey ha sido cifrada con la clave pública de Provable
-        string memory query = string(abi.encodePacked("[URL] ['json(https://pro-api.coinmarketcap.com/v1/tools/price-conversion?amount=", uint2str(_amount),"&symbol=USD&convert=EUR&CMC_PRO_API_KEY=${[decrypt] BOHAYhxT0NfxZXzIaeKPXxscUr8RIKD/X4XaQaRzTHhQev26txxN7e3sKijA5kEecTRJyH24mVzHBKi5C/DgQeujq8JJ1kZxAgao0wweVQVhltOzlgv6w4FwF5Jxb8agph+BvdHzGpJPPXm9g6QBd1BNvFny}).data.quote.EUR.price']"));
-
-        queryNestedRequest(query, QueryType.USDEUR, gasLimitMed);
-        lastReqUSDEUR = block.number;
-    }
-
     function newPetPriceRequest()
         internal
         checkLastRequest(lastReqPET)
@@ -650,6 +663,9 @@ contract CustomOracle is usingProvable, Pausable {
         lastReqPET = block.number;
     }
 
+    /**
+     * @dev Prepara query para obtener el precio del aluminio
+     **/
     function newAluminumPriceRequest()
         internal
         checkLastRequest(lastReqALUMINUM)
@@ -661,57 +677,57 @@ contract CustomOracle is usingProvable, Pausable {
         lastReqALUMINUM = block.number;
     }
 
-    function newOilPriceRequest()
-        public
-        onlyAdmin
-        checkLastRequest(lastReqOIL)
-    {
-        // La apiKey ha sido cifrada con la clave pública de Provable
-        string memory query = string(abi.encodePacked("[URL] ['json(https://www.quandl.com/api/v3/datasets/OPEC/ORB?api_key=${[decrypt] BOXY3msLJlb2O00l9QGbgb+mvJ5sCXNN7muPX1hkIm+cp5LdaVCBmejjb0ctJWuABkjwwlRHeQYsbSg3dmzpznbOquGoXFof0XAL3df8QU/oZzKLp+kFOZvNBXqgxMlh4n+wr9Q=}&rows=1).dataset.data.0.1']"));
-
-        queryNestedRequest(query, QueryType.OIL, gasLimitMed);
-        lastReqOIL = block.number;
-    }
-
+    /**
+     * @dev Prepara query para obtener la fecha y hora actual
+     *      
+     **/
     function getCurrentDateTime()
         public
         onlyAdmin
+        whenNotPaused
         checkLastRequest(lastReqDATE)
     {
         string memory query = "json(http://worldclockapi.com/api/json/utc/now).currentDateTime";
 
-        queryURLRequest(query, QueryType.DATE, gasLimitLow);
+        queryURLRequestPayable(query, QueryType.DATE, gasLimitLow);
         lastReqDATE = block.number;
     }
 
     /**
      *
-     * @dev Envío de query al oráculo con una URL simple
+     * @dev Envío de query al oráculo con una URL simple. El sender paga por la ejecución de la query.
+     *      Se devuelve al sender el importe no utilizado.
      *
      * @param _query Query a enviar
      * @param _qType Tipo de query que se envía (para control en callback)
      * @param _gasLimit Límite de gas
      */
-    function queryURLRequest(string memory _query, QueryType _qType, uint _gasLimit)
+    function queryURLRequestPayable(string memory _query, QueryType _qType, uint _gasLimit)
         internal
     {
+        require(msg.value > 0, "msg.value is zero");
         require(bytes(_query).length > 0, "Query is empty");
+        require(_gasLimit > 0, "Gas limit is zero");
 
         bytes32 _queryId;
+        uint _queryPrice;
+
+        _queryPrice = provable_getPrice("URL", _gasLimit);
 
         // ** Comprobamos si el contrato tiene saldo suficiente para el pago de la llamada al oráculo
-        if (provable_getPrice("URL", _gasLimit) > address(this).balance) {
+        if (msg.value < _queryPrice) {
 
             emit LogNewProvableQuery(address(this), "Provable query was NOT sent, please add some ETH to cover for the query fee");
-            revert("ETH balance is not enough to cover for the query fee");
+            revert("msg.value is not enough to cover for the query fee");
 
         } else {
 
             _queryId = provable_query("URL", _query, _gasLimit);
+            includeQueryInProgress(_queryId, _qType);
+ 
+            msg.sender.transfer(msg.value - _queryPrice);
 
             emit LogNewProvableQuery(address(this), "Provable URL query was sent, standing by for the answer...");
-
-            includeQueryInProgress(_queryId, _qType);
         }
     }
 
@@ -726,6 +742,7 @@ contract CustomOracle is usingProvable, Pausable {
         internal
     {
         require(bytes(_query).length > 0, "Query is empty");
+        require(_gasLimit > 0, "Gas limit is zero");
 
         bytes32 _queryId;
 
@@ -739,10 +756,9 @@ contract CustomOracle is usingProvable, Pausable {
 
             // Enviamos la query a Provable y guardamos el Id para tratarlo en el callback
             _queryId = provable_query("nested", _query, _gasLimit);
+            includeQueryInProgress(_queryId, _qType);
 
             emit LogNewProvableQuery(address(this), "Provable NESTED query was sent, standing by for the answer...");
-
-            includeQueryInProgress(_queryId, _qType);
         }
     }
 
@@ -759,6 +775,7 @@ contract CustomOracle is usingProvable, Pausable {
         queryInProgress[_queryId].qType = _qType;
         countQueryInProgress = countQueryInProgress.add(1);
     }
+    
 
     /**
      * @dev Inicializa con el valor 1 los puntos que se asignarán por defecto a los distintos tipos de envases
@@ -797,6 +814,7 @@ contract CustomOracle is usingProvable, Pausable {
     function transfer(uint _amount)
         public
         onlyAdmin
+        whenNotPaused
     {
         require (getContractBalance() >= _amount, "not enough balance");
 
@@ -815,7 +833,7 @@ contract CustomOracle is usingProvable, Pausable {
     {
         return address(this).balance;
     }
-
+    
     /**
       * @dev Fallback function - Called if other functions don't match call or
       * sent ether without data
