@@ -40,7 +40,7 @@ export class MainComponent implements OnInit {
     }
     else{ 
       console.log("updateWeb3:  web3Service.ready")     
-      this.mainService.init();                  
+      //this.mainService.init();                  
       this.mainService.getAssociatedTable();        
     }
   }

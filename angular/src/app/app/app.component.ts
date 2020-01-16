@@ -28,24 +28,25 @@ export class AppComponent implements OnInit {
        
    
   ngOnInit() {      
+    this.updateProvider("");  
+  }
+
+  async updateProvider(address: any){  
+    
     this.web3Service.bootstrapWeb3();         
     this.web3Service.refreshAccounts().then(()=>{            
       if (this.web3Service.ready){   
-        this.mainService.init();    
-        this.mainService.isAdmin();            
+        this.mainService.init(address).then((result) =>{
+          console.log("init: " + result)
+          if (result){          
+            this.mainService.paused().then((result)=>{
+                this.mainService.isAdmin();
+                this.mainService.getAssociatedTable();  
+            });     
+          }
+        })            
       }
-    })     
-  }
-
-  async updateProvider(){        
-    this.web3Service.bootstrapWeb3();         
-    this.web3Service.refreshAccounts().then(()=>{            
-      if (this.web3Service.ready){           
-        this.mainService.init();            
-        this.mainService.isAdmin();            
-        this.mainService.getAssociatedTable();  
-      }
-    }) 
+    })    
     
   }  
   
@@ -167,8 +168,9 @@ export class AppComponent implements OnInit {
 
   address(){    
     const modalRef = this.modalService.open(AddressComponent,{ size: 'lg', backdrop: 'static'});
-    modalRef.result.then((result) => { 
-      if (result == 'OK'){               
+    modalRef.result.then((address) => { 
+      if (address != 'KO'){          
+        this.updateProvider(address);        
       }
     }).catch((error) =>{      
     }); 

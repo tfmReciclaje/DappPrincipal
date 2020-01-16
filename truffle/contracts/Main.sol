@@ -38,8 +38,8 @@ contract Main is Pausable, TracerRole {
 	bytes32[] internal associatedList;
 
 	//El contructor incluye la dirección del oráculo para acceder a sus métodos
-	constructor(address payable customOracle_address) public {
-		customOracle = CustomOracle(customOracle_address);		
+	constructor(address payable customOracle_address) public payable  {
+		customOracle = CustomOracle(customOracle_address);
     }
 
     //----------------------------------------------------------------------------------------------------
@@ -200,7 +200,9 @@ contract Main is Pausable, TracerRole {
 	function updateUserBalance(bytes32 hashAssociatedName, bytes32 hashName, uint generatedPoints, bytes32 hashedSecret)
 	public whenNotPaused returns (bool){
 
-		customOracle.checkNextProcess();
+		if (customOracle.checkNextProcess()){
+			customOracle.nextProcess();
+		}		
 
 	    require(isAssociated(hashAssociatedName,msg.sender), "Associated no exist."); //Solo pude llamarlo la dirección de Contrato del Asociado.
         require(_associated[hashAssociatedName].enable, "Associated is disabled."); // El asociado debe estar activado

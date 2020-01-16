@@ -28,9 +28,8 @@
       </div>
       <select class="form-control" style="max-width: 10rem;" [(ngModel)]="web3Service.provider" (change)="updateProvider()">           
         <option >Metamask</option> 
-        <option >URL</option> 
-      </select>
-      <input *ngIf="web3Service.provider=='URL'" type="text" class="form-control" [(ngModel)]="web3Service.provider_url" > 
+        <option >Ganache</option> 
+      </select>      
       
       <div class="input-group-prepend ml-2 mr-2">
         <button class="btn btn-mg btn-secondary mr-2"  (click)="address()">Address</button>        
