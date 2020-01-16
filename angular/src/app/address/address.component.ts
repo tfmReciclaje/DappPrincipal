@@ -29,8 +29,13 @@ export class AddressComponent implements OnInit {
   }
  
   update(){
-    this.mainService.updateContractAddress(this.addressForm.get("address").value);    
-    this.closeModal();
+    if (this.addressForm.get("address").value){
+      this.activeModal.close(this.addressForm.get("address").value);  
+    }
+    else{
+      this.activeModal.close('KO');
+    }
+    
   }  
 
   closeModal() {

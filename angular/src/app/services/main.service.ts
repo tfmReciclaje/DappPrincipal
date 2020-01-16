@@ -15,7 +15,7 @@ const associated_list = require('../../assets/associatedList.json');
   // by the root application injector.
   providedIn: 'root',
 })
-export class MainService {
+export class MainService {  
 
   getAssociatedName(hashName: string): string{
     var associatedName="";
@@ -48,18 +48,39 @@ export class MainService {
   constructor(private web3Service: Web3Service, private associatedService: AssociatedService) {        
   }
 
-  public async init(){
+  public clear(){
+
+    this.associatedList = null;;
+    this.associatedTable = null;
+    this.totalGeneratedPoints = 0;
+    this.totalExchangedPoints = 0;
+    this.totalExchangedItems = 0;
+    this.totalClearedPoints = 0;
+    this.totalPack1 = 0;
+    this.totalPack2 = 0;
+    this.totalPack3 = 0;
+    this.totalItems = 0;
+  }
+
+  public async init(address: any){
             
+    this.clear()
     if (this.web3Service.ready) {
       console.log("web3Service: ready");
-      
-      this.contractMain = this.web3Service.getContract(main_truffle_contract);
-      console.log("contractMain: " + this.contractMain);      
-
-      return this.paused().then((result)=>{
-        return result;
-      });     
-    }    
+            
+        if (address){
+          main_truffle_contract.networks[this.web3Service.networkId].address = address;
+        }
+        this.contractMain = this.web3Service.getContract(main_truffle_contract);          
+        return this.web3Service.isContract(this.getContractAddress()).then((result) => {          
+          if (result){ 
+              return true;;            
+          }
+          else{
+            return false;
+          }                      
+        })              
+    }        
   }
 
   public getContractAddress(){    
@@ -67,11 +88,12 @@ export class MainService {
   } 
 
   public updateContractAddress(address: any){    
-    if (address){
-      alert(1)
+    if (address && main_truffle_contract.networks[this.web3Service.networkId].address != address){
       main_truffle_contract.networks[this.web3Service.networkId].address = address;
-      this.init();
+      return true;
     }    
+    else
+      return false;
   } 
 
   public async getAssociatedList() {

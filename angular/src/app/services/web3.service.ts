@@ -18,21 +18,14 @@ export class Web3Service {
   public ready = false;
   public bootstrap = false;
 
-  public networkId = "5777"
-
   default_account = {
     amount: 0,    
     balance: 0,
     account: ''
   };
-
-  public providers = [
-    { name: "ganache", address:"", networkId:"5777" }, 
-    { name: "rinkeby", address:"", networkId:"4" }
-  ]
-
-  public provider = "URL"
-  public provider_url = "http://localhost:7545"
+  
+  public provider = "Ganache";
+  public networkId = "5777";
 
   public accountsObservable = new Subject<string[]>();
 
@@ -73,21 +66,16 @@ export class Web3Service {
             console.log("defaultAccount: " + JSON.stringify(this.web3.eth.defaultAccount))
             console.log("window.web3.eth.defaultAccount: " + JSON.stringify(window.web3.eth.defaultAccount))
           }          
-        }            
-        this.web3.eth.net.getId((id)=>{
-          console.log(id)
-        });
-        this.networkId = "4";        
+        }                   
+        //this.networkId = this.web3.currentProvider.chainId.substring(2);
+        console.log("netId: " + this.networkId);     
         console.log(this.web3)             
       }
-      else if(this.provider == "URL"){        
+      else if(this.provider == "Ganache"){        
         Web3.providers.HttpProvider.prototype.sendAsync = Web3.providers.HttpProvider.prototype.send;
-        this.web3 = new Web3(new Web3.providers.HttpProvider(this.provider_url));              
-        this.web3.eth.net.getId((id)=>{
-          console.log(id)
-        });
-        this.networkId = "5777";        
-        console.log(this.web3)                 
+        this.web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:7545"));                             
+        //this.networkId = "5777";
+        console.log(this.web3)      
       }
     }
     catch(err){
@@ -99,16 +87,28 @@ export class Web3Service {
   }
 
   public getContract(contract: any){ 
-
+    
     console.log("contract.networks: " + JSON.stringify(contract.networks))
-    if (this.web3){
-      var contract = new this.web3.eth.Contract(contract.abi, contract.networks[this.networkId].address,        
+    if (this.web3){      
+      var contract = new this.web3.eth.Contract(contract.abi, contract.networks[this.networkId].address,
         {from: this.default_account.account, gasPrice: '20000000000'}
       );   
       return contract;      
     }
   }
 
+  public async isContract(address: any){
+    return this.web3.eth.getCode(address).then((code)=>{
+      console.log("code: " + code)
+      if(code == '0x'){
+        return false;
+      }
+      else{
+        return true;
+      }      
+    })    
+  }
+  
   public getContractByAddress(contract: any, address: any){ 
 
     console.log("contract address: " + JSON.stringify(address))
