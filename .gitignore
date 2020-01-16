@@ -15,6 +15,7 @@
 !/angular/.vscode/extensions.json
 /angular/.history/*
 
+/Oracle/app/node_modules
 
 /truffle/node_modules
 /truffle/build
