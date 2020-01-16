@@ -620,7 +620,6 @@ contract CustomOracle is usingProvable, Pausable {
     function newRandomRequest(uint _min, uint _max)
         public
         payable
-        onlyAdmin
         whenNotPaused
         checkLastRequest(lastReqRANDOM)
     {
@@ -683,7 +682,7 @@ contract CustomOracle is usingProvable, Pausable {
      **/
     function getCurrentDateTime()
         public
-        onlyAdmin
+        payable
         whenNotPaused
         checkLastRequest(lastReqDATE)
     {
