@@ -19,3 +19,7 @@
 /truffle/build
 
 /Oracle/app/node_modules
+Oracle/app/node_modules/*
+node_modules/
+package-lock.json
+truffle/bridge.log

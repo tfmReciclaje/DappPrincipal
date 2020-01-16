@@ -249,7 +249,8 @@ const App = {
   },
 
   //*
-  //* addAdmin
+  //* addAdmin: Cambia el estado de una cuenta a Admin, con lo que adquiere todos los
+  //* permisos correspondientes.
   //*
   addAdmin: async function() {
 
@@ -286,20 +287,20 @@ const App = {
   },
 
   //*
-  //*   checkProcess:
+  //*   checkProcess: Ejecuta el procedimiento para el recalculo de puntos por envase
   //*
   checkProcess: async function() {
 
     //DEBUG
     console.log("**checkProcess**");
 
-    const { checkNextProcess } = this.meta.methods;
+    const { nextProcess } = this.meta.methods;
 
-    await checkNextProcess().send({
+    await nextProcess().send({
             from: this.account
         }, function(error, transactionHash){
             if (error) {
-                console.error("Error checkNextProcess: ", error);
+                console.error("Error nextProcess: ", error);
                 showMessage("Error. Transacción no completada");
                 alert("Error. Transacción no completada: " + error);
             } else {
@@ -317,7 +318,8 @@ const App = {
   },
 
   //*
-  //* updatePointValues:
+  //* updatePointValues: Actualiza los valores utilizados para el recalculo de puntos 
+  //* por envase
   //*
   updatePointValues: async function() {
 

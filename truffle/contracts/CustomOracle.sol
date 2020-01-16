@@ -43,6 +43,8 @@ contract CustomOracle is usingProvable, Pausable {
     uint private lastReqETHEUR;
     uint private lastReqUSDEUR;
     uint private lastReqDATE;
+    uint private aluminumPrice;
+    uint private petPrice;
 
 	/**
 	 *  Variables públicas
@@ -60,8 +62,6 @@ contract CustomOracle is usingProvable, Pausable {
 
     uint public randomNumber;
     uint public rateETHEUR;
-    uint public aluminumPrice;
-    uint public petPrice;
     string public dateTime;
 
     address payable public owner;    
