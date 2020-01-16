@@ -1,5 +1,4 @@
 const CustomOracle = artifacts.require("CustomOracle.sol");
-const { waitForEvent } = require('./utils')
 
 let instance;
 
@@ -311,38 +310,6 @@ contract("CustomOracle", accounts => {
   });  
 
   /**
-   *  Se realiza una transferencia de 7 tokens a una nueva cuenta
-   * 
-   *  Se valida que:
-   *  - Se ejecuta el evento newUser
-   *  - Se ejecuta el evento newBalance
-   *  - Se ejecuta el evento coinSent
-   *  - Que los valores enviados en el evento cointSent coinciden con los de la transferencia
-   */  
-  // it("Generación de eventos", async () => {
-  
-  //   let cuenta = accounts[2];
-  //   let code = "PRUEBA3";
-  //   let fee = "";
-  //   let qty = 7;
-  //   let uni = "UNI";
-
-  //   let result = await instance.sendCoin(code, fee, qty, uni, { from: cuenta });
-
-  //   assert.equal(result.logs[0].event, "newUser", "No se generó evento newUser");
-  //   assert.equal(result.logs[1].event, "newBalance", "No se generó evento newBalance");
-  //   assert.equal(result.logs[2].event, "coinSent", "No se generó evento coinSent");
-
-  //   let mvtFields = result.logs[2].args;
-
-  //   assert.equal(mvtFields._code, code, "Campo code evento coinSent no es válido");
-  //   assert.equal(mvtFields._fee, fee, "Campo fee evento coinSent no es válido");
-  //   assert.equal(mvtFields._qty, qty, "Campo qty evento coinSent no es válido");
-  //   assert.equal(mvtFields._uni, uni, "Campo uni evento coinSent no es válido");
-  //   assert.equal(mvtFields._amount, qty, "Campo amount evento coinSent no es válido");
-  // });
-
-  /**
    *  Activa y desactiva los estados que implementan el "circuit breaker" del oráculo
    * 
    *  Se valida:
@@ -541,11 +508,9 @@ contract("CustomOracle", accounts => {
       let result = await instance.newRandomRequest(min, max, {from: accountAdmin, value:credit});
 	  assert.equal(result.logs[0].event, "LogNewProvableQuery", "No se generó evento LogNewProvableQuery()");
     } catch (error) {
-      console.log("Error3: ", error);
       assert.fail("La transacción no se ha podido realizar");
     } 
   }); 	
-
 
   /**
    *  Se valida se puede solicitar la fecha del día tras quitar el Pause
@@ -556,9 +521,8 @@ contract("CustomOracle", accounts => {
 
     try {
       let result = await instance.getCurrentDateTime({from: accountAdmin, value:credit});
-	  assert.equal(result.logs[0].event, "LogNewProvableQuery", "No se generó evento LogNewProvableQuery()");
+	    assert.equal(result.logs[0].event, "LogNewProvableQuery", "No se generó evento LogNewProvableQuery()");
     } catch (error) {
-      console.log("Error4: ", error);
       assert.fail("La transacción no se ha podido realizar");
     } 
   });
@@ -574,9 +538,8 @@ contract("CustomOracle", accounts => {
 
     try {
       let result = await instance.nextProcess({from: accountAdmin});
-	  assert.equal(result.logs[0].event, "LogNewProvableQuery", "No se generó evento LogNewProvableQuery()");
+	    assert.equal(result.logs[0].event, "LogNewProvableQuery", "No se generó evento LogNewProvableQuery()");
     } catch (error) {
-      console.log("Error5: ", error);
       assert.fail("La transacción no se ha podido realizar");
     } 
   });
@@ -592,11 +555,10 @@ contract("CustomOracle", accounts => {
     let credit = 1;
 
     try {
-		let result = await instance.newRandomRequest(min, max, {from: accountAdmin, value:credit});
-		assert.fail("La transacción se ha podido realizar");
+		  let result = await instance.newRandomRequest(min, max, {from: accountAdmin, value:credit});
+		  assert.fail("La transacción se ha podido realizar");
     } catch (error) {
-		console.log("Error32: ", error);
-		assert.equal(error.reason, msgBalance, "Se ha producido otro tipo de error");
+		  assert.equal(error.reason, msgBalance, "Se ha producido otro tipo de error");
     } 
   }); 	
 
@@ -609,147 +571,11 @@ contract("CustomOracle", accounts => {
     let credit = 1;
 
     try {
-		let result = await instance.getCurrentDateTime({from: accountAdmin, value:credit});
-		assert.fail("La transacción se ha podido realizar");
+		  let result = await instance.getCurrentDateTime({from: accountAdmin, value:credit});
+		  assert.fail("La transacción se ha podido realizar");
     } catch (error) {
-		console.log("Error42: ", error);
-		assert.equal(error.reason, msgBalance, "Se ha producido otro tipo de error");
+		  assert.equal(error.reason, msgBalance, "Se ha producido otro tipo de error");
     } 
   });
-
-  /**
-   *  Se valida solo puede solicitar un número aleatorio un cuenta admin
-   */
-  it("27. Valida que solo una cuenta admin pueda solicitar un número aleatorio", async () => {
-
-    let min = 100;
-    let max = 200;
-    let credit = 1e18;
-
-    try {
-		let result = await instance.newRandomRequest(min, max, {from: accountNoAdmin, value:credit});
-		assert.fail("La transacción se ha podido realizar");
-    } catch (error) {
-		console.log("Error32: ", error);
-		assert.equal(error.reason, msgAdmin, "Se ha producido otro tipo de error");
-    } 
-  }); 	
-
-
-  /**
-   *  Se valida solo puede solicitar la fecha del día un cuenta admin
-   */
-  it("28. Valida que solo un cuenta admin pueda solicitar la fecha del día", async () => {
-
-    let credit = 1;
-
-    try {
-		let result = await instance.getCurrentDateTime({from: accountNoAdmin, value:credit});
-		assert.fail("La transacción se ha podido realizar");
-    } catch (error) {
-		console.log("Error42: ", error);
-		assert.equal(error.reason, msgAdmin, "Se ha producido otro tipo de error");
-    } 
-  });
-  
-  /**
-   *  Valida el valor devuelto por la query de numero aleatorio
-   */
-  it("29. Comrpueba el valor devuelto por la query de numero aleatorio", async () => {
-	  
-	  let value = await instance.randomNumber.call();
-
-	  assert(value >= 100 && value <= 200, "Número aleatorio no válido");
-  });	  
-  
-  /**
-   *  Valida el valor devuelto por la query de fecha del día
-   */
-  it("30. Comprueba el valor devuelto por la query de fecha del día", async () => {
-	  
-	  let value = await instance.dateTime.call();
-	  
-	  assert.isAbove(value.length, 0, "Fecha y hora no válida");	  
-  });  
-  
-  /**
-   *  Valida los valores devueltos por el recalculo de puntos
-   */
-  it("31. Comprueba que los puntos por envase han sido recalculados", async () => {
-
-	  let prevValue = 15;
-
-	  let values = await instance.getPointsPerPack.call();
-	  let value = values.reduce((a, b) => a + b, 0);
-	  
-	  assert.notEqual(value, prevValue, "Los puntos por envase no se han actualizado");
-  });  
-	  
-
-/*
-
-    console.log("Seguimos...");
-
-    const {
-      blockNumber,
-      returnValues: {
-        myAddress,
-        randomNumber
-      }
-    } = await waitForEvent(events.generatedRandomNumber);
-  
-    console.log("blockNumber: ", blockNumber);
-    console.log("Return values: ", returnValues); 
-    console.log("Result2: ", result2);
-
-
-checkNextProcess
-
-Actualización de puntos (al menos uno de los tres ha cambiado)
-
-contador queries pendientes ??
-
-newRandomRequest ??
-
-getCurrentDateTime ??
-
- assert.isAbove(delay, 0, 'Delay should be > 0 for this test!')
-
-*/  
-
-
-/*
-it(`Should have set off a recursive query upon contract creation`, async () => {
-  hashBefore = await methods.nextRecursiveQuery().call()
-
-  const {
-    blockNumber,
-    returnValues: {
-      myAddress,
-      randomNumber
-    }
-  } = await waitForEvent("generatedRandomNumber")
-
-  console.log("blockNumber: ", blockNumber);
-  console.log("Return values: ", returnValues);
-
-  /** 
-  const timestamp  = await methods.getLastUpdated().call()
-  const lAfterCont = await methods.getSafeLowPrice().call()
-  const sAfterCont = await methods.getStandardPrice().call()
-  const fAfterCont = await methods.getFastPrice().call()
-  conversionFactor = await methods.conversionFactor().call()
-  blockNum         = blockNumber
-  time             = timestamp
-  qID              = queryID
-  lAfter           = lAfterCont
-  sAfter           = sAfterCont
-  fAfter           = fAfterCont
-  assert.equal(safeLowPrice * conversionFactor, lAfterCont, `Safe low price not logged in event correctly!`)
-  assert.equal(standardPrice * conversionFactor, sAfterCont, `Safe low price not logged in event correctly!`)
-  assert.equal(fastPrice * conversionFactor, fAfterCont, `Safe low price not logged in event correctly!`)
-  
-}) **/
-
 
 });

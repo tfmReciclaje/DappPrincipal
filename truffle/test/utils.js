@@ -3,6 +3,11 @@ const waitForEvent = (_event, _from = 0, _to = 'latest') =>
     _event({fromBlock: _from, toBlock: _to}, (e, ev) => 
       e ? reject(e) : resolve(ev)))
 
+const waitForEventRandom = () => 
+      new Promise ((resolve,reject) => 
+        instance.getPastEvents( 'generatedRandomNumber', { fromBlock: 0, toBlock: 'latest' }, (e, ev) => 
+          e ? reject(e) : resolve(ev)))
+
 const PREFIX = "Returned error: VM Exception while processing transaction: "
 
 const increaseEVMTime = (web3, secsToIncreaseBy) => 
@@ -27,6 +32,7 @@ module.exports = {
   increaseEVMTime,
   getTimestamp,
   waitForEvent,
+  waitForEventRandom,
   mineXBlocks,
   PREFIX
 }
