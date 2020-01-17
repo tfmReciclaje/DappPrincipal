@@ -5,8 +5,9 @@ import "./lib/SafeMath.sol";
 import "./lib/Pausable.sol";
 
 /**
- * 	@dev CustomOracle
- *
+ * 	@dev CustomOracle: Implementa toda la lógica relacionada con el cálculo de puntos entregados
+ *  a cambio de envases y de actualizar periódicamente los puntos por unidad, basado en ciertos
+ *  parametros del contrato y en una serie de variables off-chain.
  **/
 contract CustomOracle is usingProvable, Pausable {
 
@@ -64,7 +65,7 @@ contract CustomOracle is usingProvable, Pausable {
     uint public rateETHEUR;
     string public dateTime;
 
-    address payable public owner;    
+    address payable public owner;
 
 	/**
      *  Tipos posibles de queries enviadas por el oráculo
@@ -358,7 +359,7 @@ contract CustomOracle is usingProvable, Pausable {
         packaging[_ind].pointsPerPack = _pointsMin;
         packaging[_ind].pointsMin = _pointsMin;
         packaging[_ind].pointsMax = _pointsMax;
-        
+
         if (_priceMin > 0) { packaging[_ind].priceMin = _priceMin; }
         if (_priceMax > 0) { packaging[_ind].priceMax = _priceMax; }
 
@@ -678,7 +679,6 @@ contract CustomOracle is usingProvable, Pausable {
 
     /**
      * @dev Prepara query para obtener la fecha y hora actual
-     *      
      **/
     function getCurrentDateTime()
         public
@@ -713,7 +713,7 @@ contract CustomOracle is usingProvable, Pausable {
 
         _queryPrice = provable_getPrice("URL", _gasLimit);
 
-        // ** Comprobamos si el contrato tiene saldo suficiente para el pago de la llamada al oráculo
+        // ** Comprobamos si msg.value es suficiente para el pago de la llamada al oráculo
         if (msg.value < _queryPrice) {
 
             emit LogNewProvableQuery(address(this), "Provable query was NOT sent, please add some ETH to cover for the query fee");
