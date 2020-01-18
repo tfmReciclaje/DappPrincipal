@@ -188,7 +188,7 @@
 		
 		<div class="wrapper">
 		
-        <div class="jumbotron margin-mi padding-mi col-md-6">
+          <div class="jumbotron margin-mi padding-mi col-md-6">
 
             <div class="text-center margin-bottom-mi">
                 <h4>Precios de Referencia Ether</h4>
@@ -213,9 +213,9 @@
                 <button id="updateButton2" onclick="App.updateEthPrices()" class="btn btn-primary btn-lg btn-block btn-mi" disabled>Actualizar</button>
             </div>
 
-        </div>
+          </div>
 		
-		<div class="jumbotron margin-mi padding-mi col-md-6">
+		  <div class="jumbotron margin-mi padding-mi col-md-6">
 
             <div class="text-center margin-bottom-mi">
                 <h4>Incluir Dirección Admin</h4>
@@ -241,13 +241,13 @@
             <div>
                 <button id="add-admin" onclick="App.addAdmin()" class="btn btn-primary btn-lg btn-block btn-mi" disabled>Agregar</button>
             </div>
-        </div>
+          </div>
 		
 		</div>
 		
 		<div class="wrapper">
 		
-        <div class="jumbotron margin-mi padding-mi col-md-6">
+          <div class="jumbotron margin-mi padding-mi col-md-6">
 
             <div class="text-center margin-bottom-mi">
                 <h4>Otros Parámetros</h4>
@@ -283,7 +283,7 @@
                         <strong>Límite Gas (Bajo):</strong>
                     </div>
                     <div class="col-3">
-                        <input type="number" id="limit-gas-low" value="100000" required="" min="100000" max="1000000" placeholder="Frecuencia (bloques) con que se deben actualizar los puntos" class="form-control" />
+                        <input type="number" id="limit-gas-low" value="150000" required="" min="150000" max="1000000" placeholder="Frecuencia (bloques) con que se deben actualizar los puntos" class="form-control" />
                     </div>
                 </div>
 
@@ -292,16 +292,16 @@
                         <strong>Límite Gas (Medio):</strong>
                     </div>
                     <div class="col-3">
-                        <input type="number" id="limit-gas-med" value="100000" required="" min="100000" max="1000000" placeholder="Límite gas para queries con consumo medio" class="form-control" />
+                        <input type="number" id="limit-gas-med" value="200000" required="" min="200000" max="1000000" placeholder="Límite gas para queries con consumo medio" class="form-control" />
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-7">
-                        <strong>Límite Gas (Medio):</strong>
+                        <strong>Límite Gas (Alto):</strong>
                     </div>
                     <div class="col-3">
-                        <input type="number" id="limit-gas-high" value="100000" required="" min="100000" max="1000000" placeholder="Límite gas para queries con consumo alto" class="form-control" />
+                        <input type="number" id="limit-gas-high" value="380000" required="" min="380000" max="1000000" placeholder="Límite gas para queries con consumo alto" class="form-control" />
                     </div>
                 </div>
 
@@ -310,9 +310,9 @@
                 </div>
 
             </div>
-        </div>
+          </div>
 
-        <div class="jumbotron margin-mi padding-mi col-md-6">
+          <div class="jumbotron margin-mi padding-mi col-md-6">
             <div class="text-center margin-bottom-mi">
                 <h4>Información Oráculo</h4>
             </div>
@@ -344,10 +344,18 @@
                 <div class="btn-mi">
                     <button id="checkButton" onclick="App.checkProcess()" class="btn btn-primary btn-lg btn-block" disabled>Actualizar</button></div>
             </div>
-        </div>
+          </div>
 
 		</div>
 
-        <script src="oracle.js"></script>
+        <div class="margin-mi col-md-12">
+            <div class="text-center">
+            Dirección del contrato: <span id="contractAddress">0x000000000000000000000000000000</span>
+            </div>
+        </div>
+
+	</div>
+
+    <script src="oracle.js"></script>
 </body>
 </html>

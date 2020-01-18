@@ -51416,7 +51416,7 @@
     }
   },
   "schemaVersion": "3.0.11",
-  "updatedAt": "2020-01-17T00:26:37.900Z",
+  "updatedAt": "2020-01-18T18:29:26.671Z",
   "devdoc": {
     "details": "CustomOracle: Implementa toda la lógica relacionada con el cálculo de puntos entregados a cambio de envases y de actualizar periódicamente los puntos por unidad, basado en ciertos parametros del contrato y en una serie de variables off-chain.*",
     "methods": {

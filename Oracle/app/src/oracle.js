@@ -52,6 +52,7 @@ const App = {
 
           document.getElementById("cuenta").innerHTML = this.account;
           document.getElementById("red").innerHTML = networkId;
+          document.getElementById("contractAddress").innerHTML = deployedNetwork.address;
 
           await this.getIsAdmin();
 
@@ -257,32 +258,38 @@ const App = {
     //DEBUG
     console.log("**addAdmin**");
 
-    const addressAdmin = document.getElementById("address-admin");
-
-    // Se verifica que el valor del campo de input sea válido
-    if (addressAdmin.checkValidity()) {
-
-        const { addAdmin } = this.meta.methods;
-
-        await addAdmin(addressAdmin.value).send({
-            from: this.account
-        }, function(error, transactionHash){
-            if (error) {
-                console.error("Error addAdmin: ", error);
-                showMessage("Error. Transacción no completada");
-                alert(error);
-            } else {
-                console.info("Transaction hash: ", transactionHash);
-                showMessage("Actualización realizada. Espere confirmación.");
-                alert("Solicitud enviada correctamente\n"+ "Tx hash:\n" + transactionHash);
-            }
-        });    
-        
-        addressAdmin.value = "";
-
+    if (this.paused) {
+        showMessage("Error. El contrato está en pausa");
+        alert("Error.\n No se puede actualizar\n El contrato está en pausa");
     } else {
-        this.setStatus("ERROR. Dato de entrada no válido.");
-        alert("ERROR. Dato de entrada no válido.");
+
+        const addressAdmin = document.getElementById("address-admin");
+
+        // Se verifica que el valor del campo de input sea válido
+        if (addressAdmin.checkValidity()) {
+
+            const { addAdmin } = this.meta.methods;
+
+            await addAdmin(addressAdmin.value).send({
+                  from: this.account
+                }, function (error, transactionHash) {
+                    if (error) {
+                      console.error("Error addAdmin: ", error);
+                      showMessage("Error. Transacción no completada");
+                      alert("Error. Transacción no completada.");
+                    } else {
+                      console.info("Transaction hash: ", transactionHash);
+                      showMessage("Actualización realizada. Espere confirmación.");
+                      alert("Solicitud enviada correctamente\n" + "Tx hash:\n" + transactionHash);
+                    }
+                });
+
+            addressAdmin.value = "";
+
+        } else {
+            this.setStatus("ERROR. Dato de entrada no válido.");
+            alert("ERROR. Dato de entrada no válido.");
+        }
     }
   },
 
@@ -302,7 +309,7 @@ const App = {
             if (error) {
                 console.error("Error nextProcess: ", error);
                 showMessage("Error. Transacción no completada");
-                alert("Error. Transacción no completada: " + error);
+                alert("Error. Transacción no completada.");
             } else {
                 console.info("Transaction hash: ", transactionHash);
                 showMessage("Petición de actualización enviada.");
@@ -389,7 +396,7 @@ const App = {
                 if (error) {
                     console.error("Error setPointsPackaging: ", error);
                     showMessage("Error. Transacción no completada");
-                    alert("Error. Transacción no completada: " + error);
+                    alert("Error. Transacción no completada.");
                 } else {
 
                     document.getElementById("points1").value = pointsMin1.value;
@@ -411,7 +418,7 @@ const App = {
   },
 
   //*
-  //* updateEthPrices:
+  //* updateEthPrices: Actualiza rango de precio de referencia del Ether
   //*
   updateEthPrices: async function() {
 
@@ -441,7 +448,7 @@ const App = {
                 if (error) {
                     console.error("Error setPointsPackaging: ", error);
                     showMessage("Error. Transacción no completada");
-                    alert("Error. Transacción no completada: " + error);
+                    alert("Error. Transacción no completada.");
                 } else {
                     console.info("Transaction hash: ", transactionHash);
                     showMessage("Actualización realizada. Espere confirmación.");
@@ -458,7 +465,8 @@ const App = {
   },
 
   //*
-  //* updateOtherValues:
+  //* updateOtherValues: Valida y actualiza los valores de los otros parámetros utilizados
+  //*                    en el oráculo.
   //*
   updateOtherValues: async function() {
 
@@ -495,7 +503,7 @@ const App = {
                 if (error) {
                     console.error("Error setOtherValues: ", error);
                     showMessage("Error. Transacción no completada");
-                    alert("Error. Transacción no completada: " + error);
+                    alert("Error. Transacción no completada.");
                 } else {
                     console.info("Transaction hash: ", transactionHash);
                     showMessage("Actualización realizada. Espere confirmación.");

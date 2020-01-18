@@ -2603,7 +2603,7 @@
   },
   "networks": {},
   "schemaVersion": "3.0.11",
-  "updatedAt": "2020-01-16T12:56:51.571Z",
+  "updatedAt": "2020-01-17T19:04:36.021Z",
   "devdoc": {
     "details": "Mngrs are responsible for assigning and removing Whitelisted accounts.",
     "methods": {},
