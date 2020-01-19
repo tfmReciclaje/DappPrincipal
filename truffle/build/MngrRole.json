@@ -80,9 +80,9 @@
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "pragma solidity ^0.5.0;\n\nimport \"./Context.sol\";\nimport \"./Roles.sol\";\n\n/**\n * @title MngrRole\n * @dev Mngrs are responsible for assigning and removing Whitelisted accounts.\n */\ncontract MngrRole is Context {\n    using Roles for Roles.Role;\n\n    event MngrAdded(address indexed account);\n    event MngrRemoved(address indexed account);\n\n    Roles.Role private _mngrs;\n\n    constructor () internal {\n        _addMngr(_msgSender());\n    }\n\n    modifier onlyMngr() {\n        require(isMngr(_msgSender()), \"MngrRole: caller does not have the Mngr role\");\n        _;\n    }\n\n    function isMngr(address account) public view returns (bool) {\n        return _mngrs.has(account);\n    }\n\n    function addMngr(address account) public onlyMngr {\n        _addMngr(account);\n    }\n\n    function renounceMngr() public {\n        _removeMngr(_msgSender());\n    }\n\n    function _addMngr(address account) internal {\n        _mngrs.add(account);\n        emit MngrAdded(account);\n    }\n\n    function _removeMngr(address account) internal {\n        _mngrs.remove(account);\n        emit MngrRemoved(account);\n    }\n}",
-  "sourcePath": "/home/lealp22/TFM/DappPrincipal/truffle/contracts/lib/MngrRole.sol",
+  "sourcePath": "/home/cesar/master/DappPrincipal/truffle/contracts/lib/MngrRole.sol",
   "ast": {
-    "absolutePath": "/home/lealp22/TFM/DappPrincipal/truffle/contracts/lib/MngrRole.sol",
+    "absolutePath": "/home/cesar/master/DappPrincipal/truffle/contracts/lib/MngrRole.sol",
     "exportedSymbols": {
       "MngrRole": [
         3613
@@ -103,7 +103,7 @@
         "src": "0:23:6"
       },
       {
-        "absolutePath": "/home/lealp22/TFM/DappPrincipal/truffle/contracts/lib/Context.sol",
+        "absolutePath": "/home/cesar/master/DappPrincipal/truffle/contracts/lib/Context.sol",
         "file": "./Context.sol",
         "id": 3509,
         "nodeType": "ImportDirective",
@@ -114,7 +114,7 @@
         "unitAlias": ""
       },
       {
-        "absolutePath": "/home/lealp22/TFM/DappPrincipal/truffle/contracts/lib/Roles.sol",
+        "absolutePath": "/home/cesar/master/DappPrincipal/truffle/contracts/lib/Roles.sol",
         "file": "./Roles.sol",
         "id": 3510,
         "nodeType": "ImportDirective",
@@ -1340,7 +1340,7 @@
     "src": "0:1093:6"
   },
   "legacyAST": {
-    "absolutePath": "/home/lealp22/TFM/DappPrincipal/truffle/contracts/lib/MngrRole.sol",
+    "absolutePath": "/home/cesar/master/DappPrincipal/truffle/contracts/lib/MngrRole.sol",
     "exportedSymbols": {
       "MngrRole": [
         3613
@@ -1361,7 +1361,7 @@
         "src": "0:23:6"
       },
       {
-        "absolutePath": "/home/lealp22/TFM/DappPrincipal/truffle/contracts/lib/Context.sol",
+        "absolutePath": "/home/cesar/master/DappPrincipal/truffle/contracts/lib/Context.sol",
         "file": "./Context.sol",
         "id": 3509,
         "nodeType": "ImportDirective",
@@ -1372,7 +1372,7 @@
         "unitAlias": ""
       },
       {
-        "absolutePath": "/home/lealp22/TFM/DappPrincipal/truffle/contracts/lib/Roles.sol",
+        "absolutePath": "/home/cesar/master/DappPrincipal/truffle/contracts/lib/Roles.sol",
         "file": "./Roles.sol",
         "id": 3510,
         "nodeType": "ImportDirective",
@@ -2602,8 +2602,8 @@
     "version": "0.5.1+commit.c8a2cb62.Emscripten.clang"
   },
   "networks": {},
-  "schemaVersion": "3.0.11",
-  "updatedAt": "2020-01-17T19:04:36.021Z",
+  "schemaVersion": "3.0.13",
+  "updatedAt": "2020-01-19T11:17:27.971Z",
   "devdoc": {
     "details": "Mngrs are responsible for assigning and removing Whitelisted accounts.",
     "methods": {},

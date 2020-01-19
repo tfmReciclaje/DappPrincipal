@@ -6,6 +6,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { MessageComponent } from '../../common/message/message.component';
 
 import { AssociatedService } from '../../services/associated.service';
+import { LoadingService } from '../../services/loading.service';
 
 @Component({
   selector: 'app-add-container',
@@ -15,7 +16,8 @@ import { AssociatedService } from '../../services/associated.service';
 export class AddContainerComponent implements OnInit {
 
   constructor(public modalService: NgbModal, 
-    public activeModal: NgbActiveModal,
+    public activeModal: NgbActiveModal,    
+    public loadingService: LoadingService,    
     public associatedService: AssociatedService) { }    
       
   @Input() public container: any;
@@ -34,14 +36,16 @@ export class AddContainerComponent implements OnInit {
   }
  
   add(){
+    this.loadingService.loading = true;
     this.associatedService.AddContainer(this.container.ref, this.container.address)
-    .then(
+    .then(            
       result => {                          
+        this.loadingService.loading = false;
         if (result == "OK"){                                
           this.activeModal.close('OK');          
         }
         else{
-          
+
             const message = this.modalService.open(MessageComponent, { size: 'sm', backdrop: 'static'});                          
             message.componentInstance.type = 'Warning';
             message.componentInstance.body = "";
@@ -54,12 +58,13 @@ export class AddContainerComponent implements OnInit {
             this.activeModal.close('KO');          
         }                  
       },
-      err => {         
+      err => { 
+        this.loadingService.loading = false;        
         console.log(err)      
         const message = this.modalService.open(MessageComponent, { size: 'sm', backdrop: 'static'});                          
         message.componentInstance.type = 'Error';
         message.componentInstance.body = "";
-        message.componentInstance.details = err.toString();
+        message.componentInstance.details = JSON.stringify(err);
         message.result.then(() => {}); 
         this.activeModal.close('KO');        
       }

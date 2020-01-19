@@ -7,10 +7,12 @@ import { DiscountComponent } from '../discount/discount.component';
 import { ClearComponent } from '../clear/clear.component';
 
 import { MessageComponent } from '../../common/message/message.component';
+import { LoadingComponent } from '../../common/loading/loading.component';
 
 import { AssociatedService } from '../../services/associated.service';
 import { MainService } from '../../services/main.service';
 import { Web3Service } from '../../services/web3.service';
+import { LoadingService } from '../../services/loading.service';
 
 @Component({
   selector: 'app-associated',
@@ -20,13 +22,12 @@ import { Web3Service } from '../../services/web3.service';
 export class AssociatedComponent implements OnInit {
     
   selectedRow: number;
-  container_selected: any;
-
-  //@Input() associatedName:string;
+  container_selected: any;  
 
   constructor(public associatedService: AssociatedService,     
     public mainService: MainService,   
-    public web3Service: Web3Service,       
+    public web3Service: Web3Service,
+    public loadingService: LoadingService,           
     public modalService: NgbModal,
     public router: Router) { }    
 
@@ -41,8 +42,7 @@ export class AssociatedComponent implements OnInit {
       this.ngOnInit();
     }
     else{      
-      if (this.associatedService.associated_contract_address){
-        //this.associatedService.getHashAssociatedName();
+      if (this.associatedService.associated_contract_address){        
         this.associatedService.getAssociatedInfo();
         this.associatedService.getContainerTable();  
       }      
@@ -58,9 +58,11 @@ export class AssociatedComponent implements OnInit {
   
   enable(container_address, isEnable){
     if (isEnable){
+      this.loadingService.loading = true;      
       this.associatedService.disableContainer(container_address)
       .then(
-        result => {                          
+        result => {    
+          this.loadingService.loading = false;
           if (result == "OK"){               
             this.associatedService.getContainerTable();            
           }
@@ -73,11 +75,12 @@ export class AssociatedComponent implements OnInit {
           }
         },
         err => {
+          this.loadingService.loading = false;
           console.log(err);
           const message = this.modalService.open(MessageComponent, { size: 'sm', backdrop: 'static'});                          
           message.componentInstance.type = 'Error';
           message.componentInstance.body = "";
-          message.componentInstance.details = err.toString();
+          message.componentInstance.details = JSON.stringify(err);
           message.result.then(() => {});         
         }
 
@@ -85,9 +88,11 @@ export class AssociatedComponent implements OnInit {
     }
 
     if (!isEnable){
+      this.loadingService.loading = true;
       this.associatedService.enableContainer(container_address)
       .then(
-        result => {                          
+        result => {                     
+          this.loadingService.loading = false;     
           if (result == "OK"){             
             this.associatedService.getContainerTable();   
           }
@@ -100,11 +105,12 @@ export class AssociatedComponent implements OnInit {
           }
         },
         err => {
+          this.loadingService.loading = false;
           console.log(err);
           const message = this.modalService.open(MessageComponent, { size: 'sm', backdrop: 'static'});                          
           message.componentInstance.type = 'Error';
           message.componentInstance.body = "";
-          message.componentInstance.details = err.toString();
+          message.componentInstance.details = JSON.stringify(err);
           message.result.then(() => {});
         }
 
@@ -139,7 +145,7 @@ export class AssociatedComponent implements OnInit {
           const message = this.modalService.open(MessageComponent, { size: 'sm', backdrop: 'static'});                          
           message.componentInstance.type = 'Error';
           message.componentInstance.body = "";
-          message.componentInstance.details = err.toString();
+          message.componentInstance.details = JSON.stringify(err);
           message.result.then(() => {});           
           }
       )
@@ -187,7 +193,7 @@ export class AssociatedComponent implements OnInit {
   }
 
   main(){
-    this.router.navigate(['main']);
+    this.router.navigate(['']);
   }
 
   select(index, container) {                

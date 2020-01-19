@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { PrCommonModule } from '../common/pr-common.module';
 
 import { AssociatedComponent } from './associated/associated.component';
 import { AddContainerComponent } from './add-container/add-container.component';
@@ -38,6 +39,7 @@ import {
     MatInputModule,
     MatToolbarModule,
     MatSnackBarModule,
+    PrCommonModule
   ],  
   entryComponents: [    
     AddContainerComponent,

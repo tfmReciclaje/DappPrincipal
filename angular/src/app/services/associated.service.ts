@@ -128,25 +128,22 @@ export class AssociatedService {
     console.log('sending AddContainer transaction... (please wait)');
     try {      
 
-      //var hashName = "0x" + sha256(name);
-      //var nameRef=this.web3Service.web3.utils.keccak256(ref);
-      //var nameRef=this.web3Service.web3.web3StringToBytes32(ref);
       var nameRef=this.web3Service.web3.utils.fromAscii(ref);      
       console.log("nameRef: " + nameRef)            
-      
+            
       return this.contractAssociated.methods.addContainer(nameRef, container_address).send({from: this.web3Service.default_account.account, gas:'3000000'})
-        .then(function(receipt){
+        .then(function(receipt){      
           console.log("Transaction complete. Return: " + JSON.stringify(receipt))
           return 'OK';
           })
-        .catch(function(error){
+        .catch(function(error){         
           console.log("Transaction failed. Error: " + error)
           return error;
         });
 
-    } catch (error) {
-      console.log("Transaction failed. Error: " + error)
-          return error;    
+    } catch (error) {        
+        console.log("Transaction failed. Error: " + error)
+        return error;    
       
     }    
            
@@ -156,19 +153,18 @@ export class AssociatedService {
     
     if (this.web3Service.ready){
       console.log('sending enableContainer transaction... (please wait)');
-      try {      
-
+      try {              
         return this.contractAssociated.methods.enableContainer(container_address).send({from: this.web3Service.default_account.account, gas:'1200000', gasPrice: '20000000000' })
-          .then(function(receipt){
+          .then(function(receipt){            
             console.log("Transaction complete. Return: " + JSON.stringify(receipt))
             return 'OK';
             })
-          .catch(function(error){
+          .catch(function(error){            
             console.log("Transaction failed. Error: " + error)
             return 'KO';
             });
 
-      } catch (e) {
+      } catch (e) {        
         console.log(e);    
         return 'KO';            
       }    
@@ -181,19 +177,19 @@ export class AssociatedService {
     if (this.web3Service.ready){
       console.log('sending disableContainer transaction... (please wait)');
       try {      
-        
+                
         console.log("container_address: " + container_address)
         return this.contractAssociated.methods.disableContainer(container_address).send({from: this.web3Service.default_account.account, gas:'1200000', gasPrice: '20000000000' })
-          .then(function(receipt){
+          .then(function(receipt){            
             console.log("Transaction complete. Return: " + JSON.stringify(receipt))
             return 'OK';
             })
-          .catch(function(error){
+          .catch(function(error){            
             console.log("Transaction failed. Error: " + error)
             return 'KO';
             });
 
-      } catch (e) {
+      } catch (e) {        
         console.log(e);    
         return 'KO';    
         
@@ -225,17 +221,18 @@ export class AssociatedService {
         hashSecret= this.web3Service.web3.utils.fromAscii("")
       }
             
+    
       return this.contractAssociated.methods.packagingCollection(hashUserName, hashSecret, pack1, pack2 , pack3).send({from: this.web3Service.default_account.account, gas:'3000000'})
-        .then(function(receipt){
+        .then(function(receipt){          
           console.log("Transaction complete. Return: " + JSON.stringify(receipt))          
           return receipt.events.Generate.returnValues.points;
         })
-        .catch(function(error){          
+        .catch(function(error){                    
           console.log("Transaction failed. Error: " + error)         
           return error;          
         });
 
-    } catch (e) {
+    } catch (e) {      
       console.log(e);    
       return e;    
       
@@ -252,7 +249,6 @@ export class AssociatedService {
       console.log("secretWord: " + secretWord)
       console.log("amount: " + amount)      
       
-
       var hashUserName=this.web3Service.web3.utils.keccak256(userName);
       console.log("hashUserName: " + hashUserName)            
 
@@ -261,9 +257,9 @@ export class AssociatedService {
         hashSecret=this.web3Service.web3.utils.keccak256(secretWord);
         console.log("hashSecret: " + hashSecret)            
       }      
-            
+                  
       return this.contractAssociated.methods.exchangePoints(hashUserName, hashSecret, amount).send({from: this.web3Service.default_account.account, gas:'3000000'})
-        .then(function(receipt){
+        .then(function(receipt){          
           console.log("Transaction complete. Return: " + JSON.stringify(receipt))          
           //return receipt;
           return "OK";
@@ -286,13 +282,13 @@ export class AssociatedService {
     console.log('sending clearPoints transaction... (please wait)');
     try {                
       console.log("amount: " + amount)      
-                   
+                         
       return this.contractAssociated.methods.clearPoints(amount).send({from: this.web3Service.default_account.account, gas:'3000000'})
-        .then(function(receipt){
+        .then(function(receipt){          
           console.log("Transaction complete. Return: " + JSON.stringify(receipt))                    
           return "OK";
           })
-        .catch(function(error){          
+        .catch(function(error){                    
           console.log("Transaction failed. Error: " + error)         
           return error;          
         });
@@ -329,19 +325,18 @@ export class AssociatedService {
     if (this.web3Service.ready){
       console.log('sending pause transaction... (please wait)');
       try {      
-
+        
         return this.contractAssociated.methods.pause().send({from: this.web3Service.default_account.account, gas:'1200000', gasPrice: '20000000000' })
-          .then(function(receipt){
+          .then(function(receipt){            
             console.log("Transaction complete. Return: " + JSON.stringify(receipt))
-
             return 'OK';
             })
-          .catch(function(error){
+          .catch(function(error){            
             console.log("Transaction failed. Error: " + error)
             return 'KO';
             });
 
-      } catch (e) {
+      } catch (e) {        
         console.log(e);    
         return 'KO';    
         
@@ -355,13 +350,13 @@ export class AssociatedService {
     if (this.web3Service.ready){
       console.log('sending unpause transaction... (please wait)');
       try {      
-
+        
         return this.contractAssociated.methods.unpause().send({from: this.web3Service.default_account.account, gas:'1200000', gasPrice: '20000000000' })
           .then(function(receipt){
             console.log("Transaction complete. Return: " + JSON.stringify(receipt))
             return 'OK';
             })
-          .catch(function(error){
+          .catch(function(error){            
             console.log("Transaction failed. Error: " + error)
             return 'KO';
             });

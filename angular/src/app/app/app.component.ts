@@ -66,7 +66,7 @@ export class AppComponent implements OnInit {
           const message = this.modalService.open(MessageComponent, { size: 'sm', backdrop: 'static'});                          
           message.componentInstance.type = 'Error';
           message.componentInstance.body = "";
-          message.componentInstance.details = err.toString();
+          message.componentInstance.details = JSON.stringify(err);
           message.result.then(() => {});          
         }
       )             
@@ -127,7 +127,7 @@ export class AppComponent implements OnInit {
           const message = this.modalService.open(MessageComponent, { size: 'sm', backdrop: 'static'});                          
           message.componentInstance.type = 'Error';
           message.componentInstance.body = "";
-          message.componentInstance.details = err.toString();
+          message.componentInstance.details = JSON.stringify(err);
           message.result.then(() => {});          
         }
 
@@ -158,7 +158,7 @@ export class AppComponent implements OnInit {
           const message = this.modalService.open(MessageComponent, { size: 'sm', backdrop: 'static'});                          
           message.componentInstance.type = 'Error';
           message.componentInstance.body = "";
-          message.componentInstance.details = err.toString();
+          message.componentInstance.details = JSON.stringify(err);
           message.result.then(() => {});          
         }
 

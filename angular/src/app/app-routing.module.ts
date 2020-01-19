@@ -6,9 +6,8 @@ import { AssociatedComponent } from './associated/associated/associated.componen
 
 
 const routes: Routes = [
-  { path: 'main', component: MainComponent },
-  { path: 'associated', component: AssociatedComponent },
-  { path: '', redirectTo: 'main', pathMatch: 'full' }
+  { path: '', component: MainComponent },
+  { path: 'associated', component: AssociatedComponent }  
 ];
 
 @NgModule({

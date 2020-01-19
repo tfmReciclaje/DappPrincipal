@@ -4,8 +4,10 @@ import { Router } from '@angular/router'
 
 import { AddAssociatedComponent } from '../add-associated/add-associated.component';
 import { MessageComponent } from '../../common/message/message.component';
+import { LoadingComponent } from '../../common/loading/loading.component';
 
 import { MainService } from '../../services/main.service';
+import { LoadingService } from '../../services/loading.service';
 import { AssociatedService } from '../../services/associated.service';
 import { Web3Service } from '../../services/web3.service';
 import { MatSnackBar } from '@angular/material';
@@ -22,7 +24,8 @@ export class MainComponent implements OnInit {
 
   constructor(public mainService: MainService,     
     public associatedService: AssociatedService,     
-    public web3Service: Web3Service,       
+    public web3Service: Web3Service,    
+    public loadingService: LoadingService,              
     public modalService: NgbModal,
     public router: Router,     
     private matSnackBar: MatSnackBar) { }    
@@ -54,9 +57,11 @@ export class MainComponent implements OnInit {
   
   enable(hashName, enable){
     if (enable){
+      this.loadingService.loading = true;      
       this.mainService.disableAssociated(hashName)
       .then(
         result => {                          
+          this.loadingService.loading = false;
           if (result == "OK"){   
             //this.setStatus("Se ha desactivado con Exito el contrato del Asociado");  
             //this.toastService.show('I am a success toast', { classname: 'bg-success text-light', delay: 10000 });
@@ -79,11 +84,12 @@ export class MainComponent implements OnInit {
           }
         },
         err => {
+          this.loadingService.loading = false;
           console.log(err)      
           const message = this.modalService.open(MessageComponent, { size: 'sm', backdrop: 'static'});                          
           message.componentInstance.type = 'Error';
           message.componentInstance.body = "";
-          message.componentInstance.details = err.toString();
+          message.componentInstance.details = JSON.stringify(err);
           message.result.then(() => {});
         }
 
@@ -91,9 +97,11 @@ export class MainComponent implements OnInit {
     }
 
     if (!enable){
+      this.loadingService.loading = true;
       this.mainService.enableAssociated(hashName)
       .then(
-        result => {                          
+        result => {        
+          this.loadingService.loading = false;                  
           if (result == "OK"){ 
             //this.setStatus("Se ha activado con Exito el contrato del Asociado"); 
             this.web3Service.updateBalance();
@@ -114,11 +122,12 @@ export class MainComponent implements OnInit {
           }
         },
         err => {
+          this.loadingService.loading = false;                  
           console.log(err)      
           const message = this.modalService.open(MessageComponent, { size: 'sm', backdrop: 'static'});                          
           message.componentInstance.type = 'Error';
           message.componentInstance.body = "";
-          message.componentInstance.details = err.toString();
+          message.componentInstance.details = JSON.stringify(err);
           message.result.then(() => {});
         }
 
@@ -179,7 +188,7 @@ export class MainComponent implements OnInit {
           const message = this.modalService.open(MessageComponent, { size: 'sm', backdrop: 'static'});                          
           message.componentInstance.type = 'Error';
           message.componentInstance.body = "";
-          message.componentInstance.details = err.toString();
+          message.componentInstance.details = JSON.stringify(err);
           message.result.then(() => {});
         }
       )

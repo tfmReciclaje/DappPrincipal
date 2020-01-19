@@ -80,9 +80,9 @@
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "pragma solidity ^0.5.0;\n\nimport \"./Context.sol\";\nimport \"./Roles.sol\";\n\n/**\n * @title TracerRole\n * @dev Tracer are responsible for assigning and removing Whitelisted accounts.\n */\ncontract TracerRole is Context {\n    using Roles for Roles.Role;\n\n    event TracerAdded(address indexed account);\n    event TracerRemoved(address indexed account);\n\n    Roles.Role private _Tracer;\n\n    constructor () internal {\n        _addTracer(_msgSender());\n    }\n\n    modifier onlyTracer() {\n        require(isTracer(_msgSender()), \"TracerRole: caller does not have the Tracer role\");\n        _;\n    }\n\n    function isTracer(address account) public view returns (bool) {\n        return _Tracer.has(account);\n    }\n\n    function addTracer(address account) public onlyTracer {\n        _addTracer(account);\n    }\n\n    function renounceTracer() public {\n        _removeTracer(_msgSender());\n    }\n\n    function _addTracer(address account) internal {\n        _Tracer.add(account);\n        emit TracerAdded(account);\n    }\n\n    function _removeTracer(address account) internal {\n        _Tracer.remove(account);\n        emit TracerRemoved(account);\n    }\n}",
-  "sourcePath": "/home/lealp22/TFM/DappPrincipal/truffle/contracts/lib/TraceRole.sol",
+  "sourcePath": "/home/cesar/master/DappPrincipal/truffle/contracts/lib/TraceRole.sol",
   "ast": {
-    "absolutePath": "/home/lealp22/TFM/DappPrincipal/truffle/contracts/lib/TraceRole.sol",
+    "absolutePath": "/home/cesar/master/DappPrincipal/truffle/contracts/lib/TraceRole.sol",
     "exportedSymbols": {
       "TracerRole": [
         4171
@@ -103,7 +103,7 @@
         "src": "0:23:12"
       },
       {
-        "absolutePath": "/home/lealp22/TFM/DappPrincipal/truffle/contracts/lib/Context.sol",
+        "absolutePath": "/home/cesar/master/DappPrincipal/truffle/contracts/lib/Context.sol",
         "file": "./Context.sol",
         "id": 4067,
         "nodeType": "ImportDirective",
@@ -114,7 +114,7 @@
         "unitAlias": ""
       },
       {
-        "absolutePath": "/home/lealp22/TFM/DappPrincipal/truffle/contracts/lib/Roles.sol",
+        "absolutePath": "/home/cesar/master/DappPrincipal/truffle/contracts/lib/Roles.sol",
         "file": "./Roles.sol",
         "id": 4068,
         "nodeType": "ImportDirective",
@@ -1340,7 +1340,7 @@
     "src": "0:1136:12"
   },
   "legacyAST": {
-    "absolutePath": "/home/lealp22/TFM/DappPrincipal/truffle/contracts/lib/TraceRole.sol",
+    "absolutePath": "/home/cesar/master/DappPrincipal/truffle/contracts/lib/TraceRole.sol",
     "exportedSymbols": {
       "TracerRole": [
         4171
@@ -1361,7 +1361,7 @@
         "src": "0:23:12"
       },
       {
-        "absolutePath": "/home/lealp22/TFM/DappPrincipal/truffle/contracts/lib/Context.sol",
+        "absolutePath": "/home/cesar/master/DappPrincipal/truffle/contracts/lib/Context.sol",
         "file": "./Context.sol",
         "id": 4067,
         "nodeType": "ImportDirective",
@@ -1372,7 +1372,7 @@
         "unitAlias": ""
       },
       {
-        "absolutePath": "/home/lealp22/TFM/DappPrincipal/truffle/contracts/lib/Roles.sol",
+        "absolutePath": "/home/cesar/master/DappPrincipal/truffle/contracts/lib/Roles.sol",
         "file": "./Roles.sol",
         "id": 4068,
         "nodeType": "ImportDirective",
@@ -2602,8 +2602,8 @@
     "version": "0.5.1+commit.c8a2cb62.Emscripten.clang"
   },
   "networks": {},
-  "schemaVersion": "3.0.11",
-  "updatedAt": "2020-01-17T19:04:36.151Z",
+  "schemaVersion": "3.0.13",
+  "updatedAt": "2020-01-19T11:17:27.981Z",
   "devdoc": {
     "details": "Tracer are responsible for assigning and removing Whitelisted accounts.",
     "methods": {},

@@ -26,7 +26,7 @@
       <div class="input-group-prepend">
         <span class="input-group-text">Proveedor</span>
       </div>
-      <select class="form-control" style="max-width: 10rem;" [(ngModel)]="web3Service.provider" (change)="updateProvider()">           
+      <select class="form-control" style="max-width: 10rem;" [(ngModel)]="web3Service.provider" (change)="updateProvider('')">           
         <option >Metamask</option> 
         <option >Ganache</option> 
       </select>      

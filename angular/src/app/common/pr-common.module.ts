@@ -4,12 +4,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 import { MessageComponent } from './message/message.component';
-
-
+import { LoadingComponent } from './loading/loading.component';
 
 @NgModule({
   declarations: [    
-    MessageComponent,   
+    MessageComponent, 
+    LoadingComponent  
   ],
   imports: [
     CommonModule,
@@ -17,7 +17,8 @@ import { MessageComponent } from './message/message.component';
     ReactiveFormsModule,
   ],
   exports: [    
-    MessageComponent    
+    MessageComponent,
+    LoadingComponent   
   ],
   entryComponents: [    
     MessageComponent    

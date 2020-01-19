@@ -6,6 +6,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { MainComponent } from './main/main.component';
 import { AddAssociatedComponent } from './add-associated/add-associated.component';
+import { PrCommonModule } from '../common/pr-common.module';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { AddAssociatedComponent } from './add-associated/add-associated.componen
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,    
-    NgbModule    
+    NgbModule,
+    PrCommonModule  
   ],  
   entryComponents: [    
     AddAssociatedComponent    

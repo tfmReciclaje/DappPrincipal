@@ -136,9 +136,9 @@
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "pragma solidity ^0.5.0;\n\nimport \"./Context.sol\";\nimport \"./MngrRole.sol\";\n\n/**\n * @dev Contract module which allows children to implement an emergency stop\n * mechanism that can be triggered by an authorized account.\n *\n * This module is used through inheritance. It will make available the\n * modifiers `whenNotPaused` and `whenPaused`, which can be applied to\n * the functions of your contract. Note that they will not be pausable by\n * simply including this module, only once the modifiers are put in place.\n */\ncontract PausableMngr is Context, MngrRole {\n    /**\n     * @dev Emitted when the pause is triggered by a pauser (`account`).\n     */\n    event Paused(address account);\n\n    /**\n     * @dev Emitted when the pause is lifted by a pauser (`account`).\n     */\n    event Unpaused(address account);\n\n    bool private _paused;\n\n    /**\n     * @dev Initializes the contract in unpaused state. Assigns the Pauser role\n     * to the deployer.\n     */\n    constructor () internal {\n        _paused = false;\n    }\n\n    /**\n     * @dev Returns true if the contract is paused, and false otherwise.\n     */\n    function paused() public view returns (bool) {\n        return _paused;\n    }\n\n    /**\n     * @dev Modifier to make a function callable only when the contract is not paused.\n     */\n    modifier whenNotPaused() {\n        require(!_paused, \"Pausable: paused\");\n        _;\n    }\n\n    /**\n     * @dev Modifier to make a function callable only when the contract is paused.\n     */\n    modifier whenPaused() {\n        require(_paused, \"Pausable: not paused\");\n        _;\n    }\n\n    /**\n     * @dev Called by a pauser to pause, triggers stopped state.\n     */\n    function pause() public onlyMngr whenNotPaused {\n        _paused = true;\n        emit Paused(_msgSender());\n    }\n\n    /**\n     * @dev Called by a pauser to unpause, returns to normal state.\n     */\n    function unpause() public onlyMngr whenPaused {\n        _paused = false;\n        emit Unpaused(_msgSender());\n    }\n}",
-  "sourcePath": "/home/lealp22/TFM/DappPrincipal/truffle/contracts/lib/PausableMngr.sol",
+  "sourcePath": "/home/cesar/master/DappPrincipal/truffle/contracts/lib/PausableMngr.sol",
   "ast": {
-    "absolutePath": "/home/lealp22/TFM/DappPrincipal/truffle/contracts/lib/PausableMngr.sol",
+    "absolutePath": "/home/cesar/master/DappPrincipal/truffle/contracts/lib/PausableMngr.sol",
     "exportedSymbols": {
       "PausableMngr": [
         3805
@@ -159,7 +159,7 @@
         "src": "0:23:9"
       },
       {
-        "absolutePath": "/home/lealp22/TFM/DappPrincipal/truffle/contracts/lib/Context.sol",
+        "absolutePath": "/home/cesar/master/DappPrincipal/truffle/contracts/lib/Context.sol",
         "file": "./Context.sol",
         "id": 3720,
         "nodeType": "ImportDirective",
@@ -170,7 +170,7 @@
         "unitAlias": ""
       },
       {
-        "absolutePath": "/home/lealp22/TFM/DappPrincipal/truffle/contracts/lib/MngrRole.sol",
+        "absolutePath": "/home/cesar/master/DappPrincipal/truffle/contracts/lib/MngrRole.sol",
         "file": "./MngrRole.sol",
         "id": 3721,
         "nodeType": "ImportDirective",
@@ -1132,7 +1132,7 @@
     "src": "0:1988:9"
   },
   "legacyAST": {
-    "absolutePath": "/home/lealp22/TFM/DappPrincipal/truffle/contracts/lib/PausableMngr.sol",
+    "absolutePath": "/home/cesar/master/DappPrincipal/truffle/contracts/lib/PausableMngr.sol",
     "exportedSymbols": {
       "PausableMngr": [
         3805
@@ -1153,7 +1153,7 @@
         "src": "0:23:9"
       },
       {
-        "absolutePath": "/home/lealp22/TFM/DappPrincipal/truffle/contracts/lib/Context.sol",
+        "absolutePath": "/home/cesar/master/DappPrincipal/truffle/contracts/lib/Context.sol",
         "file": "./Context.sol",
         "id": 3720,
         "nodeType": "ImportDirective",
@@ -1164,7 +1164,7 @@
         "unitAlias": ""
       },
       {
-        "absolutePath": "/home/lealp22/TFM/DappPrincipal/truffle/contracts/lib/MngrRole.sol",
+        "absolutePath": "/home/cesar/master/DappPrincipal/truffle/contracts/lib/MngrRole.sol",
         "file": "./MngrRole.sol",
         "id": 3721,
         "nodeType": "ImportDirective",
@@ -2130,8 +2130,8 @@
     "version": "0.5.1+commit.c8a2cb62.Emscripten.clang"
   },
   "networks": {},
-  "schemaVersion": "3.0.11",
-  "updatedAt": "2020-01-17T19:04:36.081Z",
+  "schemaVersion": "3.0.13",
+  "updatedAt": "2020-01-19T11:17:27.975Z",
   "devdoc": {
     "details": "Contract module which allows children to implement an emergency stop mechanism that can be triggered by an authorized account. * This module is used through inheritance. It will make available the modifiers `whenNotPaused` and `whenPaused`, which can be applied to the functions of your contract. Note that they will not be pausable by simply including this module, only once the modifiers are put in place.",
     "methods": {

@@ -24,7 +24,7 @@ export class Web3Service {
     account: ''
   };
   
-  public provider = "Ganache";
+  public provider = "Metamask";
   public networkId = "5777";
 
   public accountsObservable = new Subject<string[]>();

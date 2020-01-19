@@ -80,9 +80,9 @@
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "pragma solidity ^0.5.0;\n\nimport \"./Context.sol\";\nimport \"./Roles.sol\";\n\n/**\n * @title AdminRole\n * @dev Admins are responsible for assigning and removing Whitelisted accounts.\n */\ncontract AdminRole is Context {\n    using Roles for Roles.Role;\n\n    event AdminAdded(address indexed account);\n    event AdminRemoved(address indexed account);\n\n    Roles.Role private _admins;\n\n    constructor () internal {\n        _addAdmin(_msgSender());\n    }\n\n    modifier onlyAdmin() {\n        require(isAdmin(_msgSender()), \"AdminRole: caller does not have the Admin role\");\n        _;\n    }\n\n    function isAdmin(address account) public view returns (bool) {\n        return _admins.has(account);\n    }\n\n    function addAdmin(address account) public onlyAdmin {\n        _addAdmin(account);\n    }\n\n    function renounceAdmin() public {\n        _removeAdmin(_msgSender());\n    }\n\n    function _addAdmin(address account) internal {\n        _admins.add(account);\n        emit AdminAdded(account);\n    }\n\n    function _removeAdmin(address account) internal {\n        _admins.remove(account);\n        emit AdminRemoved(account);\n    }\n}",
-  "sourcePath": "/home/lealp22/TFM/DappPrincipal/truffle/contracts/lib/AdminRole.sol",
+  "sourcePath": "/home/cesar/master/DappPrincipal/truffle/contracts/lib/AdminRole.sol",
   "ast": {
-    "absolutePath": "/home/lealp22/TFM/DappPrincipal/truffle/contracts/lib/AdminRole.sol",
+    "absolutePath": "/home/cesar/master/DappPrincipal/truffle/contracts/lib/AdminRole.sol",
     "exportedSymbols": {
       "AdminRole": [
         3422
@@ -103,7 +103,7 @@
         "src": "0:23:3"
       },
       {
-        "absolutePath": "/home/lealp22/TFM/DappPrincipal/truffle/contracts/lib/Context.sol",
+        "absolutePath": "/home/cesar/master/DappPrincipal/truffle/contracts/lib/Context.sol",
         "file": "./Context.sol",
         "id": 3318,
         "nodeType": "ImportDirective",
@@ -114,7 +114,7 @@
         "unitAlias": ""
       },
       {
-        "absolutePath": "/home/lealp22/TFM/DappPrincipal/truffle/contracts/lib/Roles.sol",
+        "absolutePath": "/home/cesar/master/DappPrincipal/truffle/contracts/lib/Roles.sol",
         "file": "./Roles.sol",
         "id": 3319,
         "nodeType": "ImportDirective",
@@ -1340,7 +1340,7 @@
     "src": "0:1117:3"
   },
   "legacyAST": {
-    "absolutePath": "/home/lealp22/TFM/DappPrincipal/truffle/contracts/lib/AdminRole.sol",
+    "absolutePath": "/home/cesar/master/DappPrincipal/truffle/contracts/lib/AdminRole.sol",
     "exportedSymbols": {
       "AdminRole": [
         3422
@@ -1361,7 +1361,7 @@
         "src": "0:23:3"
       },
       {
-        "absolutePath": "/home/lealp22/TFM/DappPrincipal/truffle/contracts/lib/Context.sol",
+        "absolutePath": "/home/cesar/master/DappPrincipal/truffle/contracts/lib/Context.sol",
         "file": "./Context.sol",
         "id": 3318,
         "nodeType": "ImportDirective",
@@ -1372,7 +1372,7 @@
         "unitAlias": ""
       },
       {
-        "absolutePath": "/home/lealp22/TFM/DappPrincipal/truffle/contracts/lib/Roles.sol",
+        "absolutePath": "/home/cesar/master/DappPrincipal/truffle/contracts/lib/Roles.sol",
         "file": "./Roles.sol",
         "id": 3319,
         "nodeType": "ImportDirective",
@@ -2602,8 +2602,8 @@
     "version": "0.5.1+commit.c8a2cb62.Emscripten.clang"
   },
   "networks": {},
-  "schemaVersion": "3.0.11",
-  "updatedAt": "2020-01-17T19:04:35.954Z",
+  "schemaVersion": "3.0.13",
+  "updatedAt": "2020-01-19T11:17:27.965Z",
   "devdoc": {
     "details": "Admins are responsible for assigning and removing Whitelisted accounts.",
     "methods": {},

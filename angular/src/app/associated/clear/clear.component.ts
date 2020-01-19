@@ -3,8 +3,11 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup, FormControl } from '@angular/forms';
 import { MessageComponent } from '../../common/message/message.component';
+import { LoadingComponent } from '../../common/loading/loading.component';
 
 import { AssociatedService } from '../../services/associated.service';
+import { LoadingService } from '../../services/loading.service';
+
 
 @Component({
   selector: 'app-clear',
@@ -15,6 +18,7 @@ export class ClearComponent implements OnInit {
 
   constructor(public modalService: NgbModal, 
     public activeModal: NgbActiveModal,
+    public loadingService: LoadingService,           
     public associatedService: AssociatedService ) { }    
           
   @Input() exchangedPoints: number;
@@ -27,9 +31,11 @@ export class ClearComponent implements OnInit {
   }
 
   clear(){
+    this.loadingService.loading = true;
     this.associatedService.clearPoints(this.amount)
     .then(
       response => {          
+        this.loadingService.loading = false;
         if (response == "OK"){                       
           this.associatedService.getAssociatedInfo().then((associatedInfo) =>{            
             this.exchangedPoints = associatedInfo.exchangedPoints;
@@ -47,11 +53,12 @@ export class ClearComponent implements OnInit {
         }
       },
       err => {
+        this.loadingService.loading = false;
         console.log(err)    
         const message = this.modalService.open(MessageComponent, { size: 'sm', backdrop: 'static'});                          
         message.componentInstance.type = 'Error';
         message.componentInstance.body = "";
-        message.componentInstance.details = err.toString();
+        message.componentInstance.details = JSON.stringify(err);
         message.result.then(() => {});                    
       }
     )

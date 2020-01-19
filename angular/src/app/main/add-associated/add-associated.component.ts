@@ -5,6 +5,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 
 import { MessageComponent } from '../../common/message/message.component';
 import { MainService } from '../../services/main.service';
+import { LoadingService } from '../../services/loading.service';
 
 declare let require: any;
 const associatedList = require('../../../assets/associatedList.json');
@@ -18,6 +19,7 @@ export class AddAssociatedComponent implements OnInit {
 
   constructor(public modalService: NgbModal, 
     public activeModal: NgbActiveModal,
+    public loadingService: LoadingService,           
     public mainService: MainService) { }    
       
   @Input() public associated: any;
@@ -37,9 +39,11 @@ export class AddAssociatedComponent implements OnInit {
   }
  
   add(){
+    this.loadingService.loading = true;
     this.mainService.AddAssociated(this.associated.name, this.associated.address)
     .then(
-      result => {                          
+      result => {  
+        this.loadingService.loading = false;                        
         if (result == "OK"){                                
           this.activeModal.close('OK');          
         }
@@ -53,18 +57,19 @@ export class AddAssociatedComponent implements OnInit {
               message.componentInstance.details = "No se puede añadir un nuevo asociado. El contrato está en modo Pausa";  
             }
             else{
-              message.componentInstance.details = result;
+              message.componentInstance.details = JSON.stringify(result);
             }   
             message.result.then(() => {});          
           this.activeModal.close('KO');          
         }
       },
       err => {
+        this.loadingService.loading = false;
         console.log(err)      
         const message = this.modalService.open(MessageComponent, { size: 'sm', backdrop: 'static'});                          
         message.componentInstance.type = 'Error';
         message.componentInstance.body = "";
-        message.componentInstance.details = err.toString();
+        message.componentInstance.details = JSON.stringify(err);
         message.result.then(() => {});
         this.activeModal.close('KO');        
       }
